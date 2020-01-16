@@ -13,10 +13,24 @@ import org.milan.naucnacentrala.model.User;
 import org.milan.naucnacentrala.model.dto.FormFieldsDTO;
 import org.milan.naucnacentrala.model.dto.FormSubmissionDTO;
 import org.milan.naucnacentrala.model.dto.Mapper;
+import org.milan.naucnacentrala.model.dto.UserDTO;
+import org.milan.naucnacentrala.model.enums.Enums;
+import org.milan.naucnacentrala.repository.IAuthorityRepository;
 import org.milan.naucnacentrala.repository.IUserRepository;
+import org.milan.naucnacentrala.security.TokenUtils;
+import org.milan.naucnacentrala.security.auth.JwtAuthenticationRequest;
+import org.milan.naucnacentrala.security.auth.UserTokenState;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mobile.device.Device;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
@@ -39,6 +53,15 @@ public class UserService {
 
     @Autowired
     IUserRepository _userRepo;
+
+    @Autowired
+    TokenUtils tokenUtils;
+
+    @Autowired
+    IAuthorityRepository _authorityRepository;
+
+    @Autowired
+    private AuthenticationManager manager;
 
     private final String REG_PROCESS_INSTANCE_ID = "Process_registracija_korisnika";
 
@@ -63,8 +86,42 @@ public class UserService {
         formService.submitTaskForm(taskId, map);
     }
 
+    public UserTokenState login(JwtAuthenticationRequest authenticationRequest, Device device) {
+
+        final Authentication authentication = manager
+                .authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(),
+                        authenticationRequest.getPassword()));
+
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        User user = (User) authentication.getPrincipal();
+
+        if(user == null) {
+            throw new UsernameNotFoundException("Bad credentials.");
+        }
+
+        String jwt = tokenUtils.generateToken(user.getUsername(), device);
+        return new UserTokenState(user.getId(), user.getAuthorities().get(0).getName(), jwt, tokenUtils.EXPIRES_IN);
+    }
+
+
     public int createUser(User u) {
         return _userRepo.save(u).getId();
+    }
+
+    public void createCamundaUserAndSetActive(String username) {
+        User u = _userRepo.findByUsername(username).get();
+
+        org.camunda.bpm.engine.identity.User camundaUser = identityService.newUser(u.getUsername());
+        camundaUser.setEmail(u.getEmail());
+        camundaUser.setFirstName(u.getFirstname());
+        camundaUser.setLastName(u.getLastname());
+        camundaUser.setPassword(u.getPassword());
+        identityService.saveUser(camundaUser);
+
+        u.setActive(true);
+        _userRepo.save(u);
     }
 
     public void verify(String processInstanceId_b64, String username_b64) {
@@ -74,10 +131,7 @@ public class UserService {
 
         User u = _userRepo.findByUsername(username).get();
 
-        runtimeService.setVariable(processInstanceId, "active", true);
-
-        u.setActive(true);
-        _userRepo.save(u);
+        runtimeService.setVariable(processInstanceId, "activated", true);
     }
 
 
@@ -93,5 +147,33 @@ public class UserService {
                 }
             }
         }
+    }
+
+    public void assignRecenzentRole(String username) {
+        org.camunda.bpm.engine.identity.User userCamunda =
+                identityService.createUserQuery().userId(username).singleResult();
+        if (userCamunda == null) {
+            throw new BusinessException("Error! Cannot find user in camunda DB");
+        }
+        identityService.createMembership(username, "recenzenti");
+
+        User u = _userRepo.findByUsername(username).get();
+
+        u.getAuthorities().clear();
+        u.getAuthorities().add(_authorityRepository.findOneByName(Enums.UserRole.RECENZENT.toString()));
+
+        _userRepo.save(u);
+
+    }
+
+    public UserDTO getLoggedUser(HttpServletRequest request) {
+
+        String username = getUsernameFromRequest(request);
+
+        return UserDTO.formDto(_userRepo.findByUsername(username).get());
+    }
+
+    public String getUsernameFromRequest(HttpServletRequest request) {
+        return tokenUtils.getUsernameFromToken(tokenUtils.getToken(request));
     }
 }

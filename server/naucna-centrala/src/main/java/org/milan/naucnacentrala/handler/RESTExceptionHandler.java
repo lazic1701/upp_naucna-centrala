@@ -1,5 +1,6 @@
 package org.milan.naucnacentrala.handler;
 
+import org.camunda.bpm.engine.exception.NullValueException;
 import org.milan.naucnacentrala.exception.BusinessException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -16,6 +17,15 @@ import java.util.NoSuchElementException;
 public class RESTExceptionHandler extends ResponseEntityExceptionHandler {
 
 
+
+
+    @ExceptionHandler(NullValueException.class)
+    protected ResponseEntity<Object> handleNullValueException(NullValueException ex) {
+        ApiError apiError = new ApiError(HttpStatus.NOT_FOUND);
+        apiError.setMessage(ex.getMessage());
+        ex.printStackTrace();
+        return buildResponseEntity(apiError);
+    }
 
 
     @ExceptionHandler(NoSuchElementException.class)

@@ -1,14 +1,15 @@
 package org.milan.naucnacentrala.model;
 
 import org.milan.naucnacentrala.model.enums.Enums;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "_user")
-public class User {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,10 +39,6 @@ public class User {
     @Column(nullable = false)
     private String lastname;
 
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private Enums.UserRole userRole;
-
     @Column(nullable = false, columnDefinition = "boolean default false")
     private boolean active;
 
@@ -55,10 +52,16 @@ public class User {
     )
     private Set<NaucnaOblast> naucneOblastiAutor = new HashSet<>();
 
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "user_authority",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "id"))
+    private List<Authority> authorities = new ArrayList<>();
+
     public User() {
     }
 
-    public User(String city, String country, String title, String email, String username, String password, String firstname, String lastname, Enums.UserRole userRole, boolean active, Set<NaucnaOblast> naucneOblastiAutor) {
+    public User(String city, String country, String title, String email, String username, String password, String firstname, String lastname, boolean active, Set<NaucnaOblast> naucneOblastiAutor) {
         this.city = city;
         this.country = country;
         this.title = title;
@@ -67,7 +70,6 @@ public class User {
         this.password = password;
         this.firstname = firstname;
         this.lastname = lastname;
-        this.userRole = userRole;
         this.active = active;
         this.naucneOblastiAutor = naucneOblastiAutor;
     }
@@ -80,12 +82,43 @@ public class User {
         this.active = active;
     }
 
+    @Override
     public String getUsername() {
         return username;
     }
 
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    @Override
+    public List<Authority> getAuthorities() {
+        return this.authorities;
+    }
+
+
+    public void setAuthorities(List<Authority> authorities) {
+        this.authorities = authorities;
     }
 
     public String getPassword() {
@@ -150,14 +183,6 @@ public class User {
 
     public void setLastname(String lastname) {
         this.lastname = lastname;
-    }
-
-    public Enums.UserRole getUserRole() {
-        return userRole;
-    }
-
-    public void setUserRole(Enums.UserRole userRole) {
-        this.userRole = userRole;
     }
 
     public Set<NaucnaOblast> getNaucneOblastiAutor() {

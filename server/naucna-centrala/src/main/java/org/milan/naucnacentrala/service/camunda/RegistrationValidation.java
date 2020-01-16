@@ -8,9 +8,11 @@ import org.milan.naucnacentrala.model.NaucnaOblast;
 import org.milan.naucnacentrala.model.User;
 import org.milan.naucnacentrala.model.dto.FormSubmissionDTO;
 import org.milan.naucnacentrala.model.enums.Enums;
+import org.milan.naucnacentrala.repository.IAuthorityRepository;
 import org.milan.naucnacentrala.repository.INaucnaOblastRepository;
 import org.milan.naucnacentrala.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,6 +28,9 @@ public class RegistrationValidation implements JavaDelegate {
 
     @Autowired
     INaucnaOblastRepository _noRepo;
+
+    @Autowired
+    IAuthorityRepository authorityRepository;
 
     @Override
     public void execute(DelegateExecution delegateExecution) throws Exception {
@@ -49,7 +54,7 @@ public class RegistrationValidation implements JavaDelegate {
                 u.setUsername(fs.getFieldValue());
                 runtimeService.setVariable(delegateExecution.getProcessInstanceId(), "usernameForValidation", fs.getFieldValue());
             } else if (fs.getFieldId().equals("password")) {
-                u.setPassword((fs.getFieldValue()));
+                u.setPassword(hashPass(fs.getFieldValue()));
             } else if (fs.getFieldId().equals("firstname")) {
                 u.setFirstname((fs.getFieldValue()));
             } else if (fs.getFieldId().equals("lastname")) {
@@ -71,10 +76,15 @@ public class RegistrationValidation implements JavaDelegate {
             }
         }
 
-        u.setUserRole(Enums.UserRole.AUTOR);
+        u.getAuthorities().add(authorityRepository.findOneByName(Enums.UserRole.AUTOR.toString()));
         u.setActive(false);
 
         _userService.createUser(u);
 
     }
+    private String hashPass(String password) {
+        return BCrypt.hashpw(password, BCrypt.gensalt());
+    }
+
+
 }

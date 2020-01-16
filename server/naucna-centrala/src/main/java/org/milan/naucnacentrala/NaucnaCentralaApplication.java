@@ -1,5 +1,7 @@
 package org.milan.naucnacentrala;
 
+import org.milan.naucnacentrala.handler.InitHandler;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -30,5 +32,4 @@ public class NaucnaCentralaApplication {
 		bean.setOrder(0);
 		return bean;
 	}
-
 }

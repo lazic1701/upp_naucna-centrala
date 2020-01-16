@@ -36,7 +36,7 @@ public class SendVerificationEmail implements JavaDelegate {
 
         sendEmail(u, delegateExecution.getProcessInstanceId());
 
-        runtimeService.setVariable(delegateExecution.getProcessInstanceId(), "active", false);
+        runtimeService.setVariable(delegateExecution.getProcessInstanceId(), "activated", false);
 
     }
 
@@ -51,7 +51,7 @@ public class SendVerificationEmail implements JavaDelegate {
         String username_b64 = Base64.getEncoder().encodeToString(u.getUsername().getBytes());
         String processId_b64 = Base64.getEncoder().encodeToString(processInstanceId.getBytes());
 
-        String endpointUrl = "http://localhost:4200//verification/" + processId_b64 + "/" + username_b64;
+        String endpointUrl = "http://localhost:4200/verification/" + processId_b64 + "/" + username_b64;
 
         mail.setText("Poštovanje " + u.getFirstname() + "!," +
                 "\n" +
