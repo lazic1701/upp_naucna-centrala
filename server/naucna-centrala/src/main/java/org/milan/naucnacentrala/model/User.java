@@ -46,22 +46,31 @@ public class User implements UserDetails {
             CascadeType.PERSIST,
             CascadeType.MERGE
     })
-    @JoinTable(name = "autor_naucnaoblast",
+    @JoinTable(name = "_user_naucnaoblast",
             joinColumns = @JoinColumn(name = "naucnaoblast_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
-    private Set<NaucnaOblast> naucneOblastiAutor = new HashSet<>();
+    private Set<NaucnaOblast> naucneOblastiUser = new HashSet<>();
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name = "user_authority",
+    @JoinTable(name = "_user_authority",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "id"))
     private List<Authority> authorities = new ArrayList<>();
 
+    @OneToMany(mappedBy = "glavniUrednik", fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
+    private Set<Casopis> casopisiGlavniUrednik = new HashSet<>();
+
+    @ManyToMany(mappedBy = "urednici")
+    private Set<Casopis> casopisiUrednik = new HashSet<>();
+
+    @ManyToMany(mappedBy = "recenzenti")
+    private Set<Casopis> casopisiRecenzent = new HashSet<>();
+
     public User() {
     }
 
-    public User(String city, String country, String title, String email, String username, String password, String firstname, String lastname, boolean active, Set<NaucnaOblast> naucneOblastiAutor) {
+    public User(String city, String country, String title, String email, String username, String password, String firstname, String lastname, boolean active, Set<NaucnaOblast> naucneOblastiUser, List<Authority> authorities, Set<Casopis> casopisiGlavniUrednik, Set<Casopis> casopisiUrednik, Set<Casopis> casopisiRecenzent) {
         this.city = city;
         this.country = country;
         this.title = title;
@@ -71,8 +80,14 @@ public class User implements UserDetails {
         this.firstname = firstname;
         this.lastname = lastname;
         this.active = active;
-        this.naucneOblastiAutor = naucneOblastiAutor;
+        this.naucneOblastiUser = naucneOblastiUser;
+        this.authorities = authorities;
+        this.casopisiGlavniUrednik = casopisiGlavniUrednik;
+        this.casopisiUrednik = casopisiUrednik;
+        this.casopisiRecenzent = casopisiRecenzent;
     }
+
+
 
     public boolean isActive() {
         return active;
@@ -185,11 +200,35 @@ public class User implements UserDetails {
         this.lastname = lastname;
     }
 
-    public Set<NaucnaOblast> getNaucneOblastiAutor() {
-        return naucneOblastiAutor;
+    public Set<NaucnaOblast> getNaucneOblastiUser() {
+        return naucneOblastiUser;
     }
 
-    public void setNaucneOblastiAutor(Set<NaucnaOblast> naucneOblastiAutor) {
-        this.naucneOblastiAutor = naucneOblastiAutor;
+    public void setNaucneOblastiUser(Set<NaucnaOblast> naucneOblastiUser) {
+        this.naucneOblastiUser = naucneOblastiUser;
+    }
+
+    public Set<Casopis> getCasopisiGlavniUrednik() {
+        return casopisiGlavniUrednik;
+    }
+
+    public void setCasopisiGlavniUrednik(Set<Casopis> casopisiGlavniUrednik) {
+        this.casopisiGlavniUrednik = casopisiGlavniUrednik;
+    }
+
+    public Set<Casopis> getCasopisiUrednik() {
+        return casopisiUrednik;
+    }
+
+    public void setCasopisiUrednik(Set<Casopis> casopisiUrednik) {
+        this.casopisiUrednik = casopisiUrednik;
+    }
+
+    public Set<Casopis> getCasopisiRecenzent() {
+        return casopisiRecenzent;
+    }
+
+    public void setCasopisiRecenzent(Set<Casopis> casopisiRecenzent) {
+        this.casopisiRecenzent = casopisiRecenzent;
     }
 }

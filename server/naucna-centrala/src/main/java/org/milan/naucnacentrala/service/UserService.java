@@ -118,7 +118,9 @@ public class UserService {
         camundaUser.setFirstName(u.getFirstname());
         camundaUser.setLastName(u.getLastname());
         camundaUser.setPassword(u.getPassword());
+
         identityService.saveUser(camundaUser);
+        identityService.createMembership(u.getUsername(), "autori");
 
         u.setActive(true);
         _userRepo.save(u);
@@ -155,12 +157,14 @@ public class UserService {
         if (userCamunda == null) {
             throw new BusinessException("Error! Cannot find user in camunda DB");
         }
+
+        identityService.deleteMembership(username, "autori");
         identityService.createMembership(username, "recenzenti");
 
         User u = _userRepo.findByUsername(username).get();
 
         u.getAuthorities().clear();
-        u.getAuthorities().add(_authorityRepository.findOneByName(Enums.UserRole.RECENZENT.toString()));
+        u.getAuthorities().add(_authorityRepository.findOneByName(Enums.UserRole.ROLE_RECENZENT.toString()));
 
         _userRepo.save(u);
 

@@ -30,6 +30,7 @@ public class SendVerificationEmail implements JavaDelegate {
 
     @Override
     public void execute(DelegateExecution delegateExecution) throws Exception {
+        System.out.println("[SendVerificationEmail]: start");
 
         String username = (String) delegateExecution.getVariable("usernameForValidation");
         User u = _userRepo.findByUsername(username).get();

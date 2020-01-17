@@ -14,6 +14,7 @@ public class AssignRecenzent implements JavaDelegate {
 
     @Override
     public void execute(DelegateExecution delegateExecution) throws Exception {
+        System.out.println("[AssignRecenzent]: start");
         String username = (String) delegateExecution.getVariable("usernameForValidation");
 
         _userService.assignRecenzentRole(username);

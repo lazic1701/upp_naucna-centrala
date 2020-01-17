@@ -70,13 +70,13 @@ public class RegistrationValidation implements JavaDelegate {
             } else if (fs.getFieldId().equals("naucneOblasti")) {
                 for (NaucnaOblast no : _noRepo.findAll()) {
                     if (no.getId().equals(fs.getFieldValue())) {
-                        u.getNaucneOblastiAutor().add(no);
+                        u.getNaucneOblastiUser().add(no);
                     }
                 }
             }
         }
 
-        u.getAuthorities().add(authorityRepository.findOneByName(Enums.UserRole.AUTOR.toString()));
+        u.getAuthorities().add(authorityRepository.findOneByName(Enums.UserRole.ROLE_AUTOR.toString()));
         u.setActive(false);
 
         _userService.createUser(u);

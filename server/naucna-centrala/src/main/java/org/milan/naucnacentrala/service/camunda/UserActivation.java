@@ -21,6 +21,7 @@ public class UserActivation implements JavaDelegate {
 
     @Override
     public void execute(DelegateExecution delegateExecution) throws Exception {
+        System.out.println("[UserActivation]: start");
 
         String username = (String) delegateExecution.getVariable("usernameForValidation");
         _userService.createCamundaUserAndSetActive(username);

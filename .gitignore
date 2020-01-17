@@ -1,0 +1,46 @@
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+
+# compiled output
+/client/naucna-centrala-app/dist
+/client/naucna-centrala-app/tmp
+/client/naucna-centrala-app/out-tsc
+# Only exists if Bazel was run
+/client/naucna-centrala-app/bazel-out
+
+# dependencies
+/client/naucna-centrala-app/node_modules
+
+# profiling files
+/client/naucna-centrala-app/chrome-profiler-events*.json
+/client/naucna-centrala-app/speed-measure-plugin*.json
+
+# IDEs and editors
+/client/naucna-centrala-app/.idea
+/client/naucna-centrala-app/.project
+/client/naucna-centrala-app/.classpath
+/client/naucna-centrala-app/.c9/
+/client/naucna-centrala-app/*.launch
+/client/naucna-centrala-app/.settings/
+/client/naucna-centrala-app/*.sublime-workspace
+
+# IDE - VSCode
+/client/naucna-centrala-app/.vscode/*
+/client/naucna-centrala-app/!.vscode/settings.json
+/client/naucna-centrala-app/!.vscode/tasks.json
+/client/naucna-centrala-app/!.vscode/launch.json
+/client/naucna-centrala-app/!.vscode/extensions.json
+/client/naucna-centrala-app/.history/*
+
+# misc
+/client/naucna-centrala-app/.sass-cache
+/client/naucna-centrala-app/connect.lock
+/client/naucna-centrala-app/coverage
+/client/naucna-centrala-app/libpeerconnection.log
+/client/naucna-centrala-app/npm-debug.log
+/client/naucna-centrala-app/yarn-error.log
+/client/naucna-centrala-app/testem.log
+/client/naucna-centrala-app/typings
+
+# System Files
+/client/naucna-centrala-app/.DS_Store
+/client/naucna-centrala-app/Thumbs.db

@@ -1,5 +1,7 @@
 package org.milan.naucnacentrala.model.dto;
 
+import org.camunda.bpm.engine.task.Task;
+
 public class TaskDTO {
 
     String taskId;
@@ -13,6 +15,14 @@ public class TaskDTO {
         this.taskId = taskId;
         this.name = name;
         this.assignee = assignee;
+    }
+
+    public static TaskDTO formDto(Task t) {
+        if (t == null) {
+            return new TaskDTO();
+        } else {
+            return new TaskDTO(t.getId(), t.getName(), t.getAssignee());
+        }
     }
 
     public String getTaskId() {

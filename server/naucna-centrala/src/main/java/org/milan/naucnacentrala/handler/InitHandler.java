@@ -55,5 +55,57 @@ public class InitHandler  {
             identityService.createMembership(demo.getId(), "administratori");
         }
 
+
+        User lepi = identityService.createUserQuery().userId("lepi").singleResult();
+
+        if (lepi == null) {
+            lepi = identityService.newUser("lepi");
+            lepi.setEmail("zokofausti@gmail.com");
+            lepi.setPassword("mile");
+            identityService.saveUser(lepi);
+            identityService.createMembership(lepi.getId(), "urednici");
+        }
+
+        User lazoni = identityService.createUserQuery().userId("lazoni").singleResult();
+
+        if (lazoni == null) {
+            lazoni = identityService.newUser("prelepi");
+            lazoni.setEmail("lazoni.milancello@gmail.com");
+            lazoni.setPassword("mile");
+            identityService.saveUser(lazoni);
+            identityService.createMembership(lazoni.getId(), "urednici");
+        }
+
+        User perun = identityService.createUserQuery().userId("perun").singleResult();
+
+        if (perun == null) {
+            perun = identityService.newUser("perun");
+            perun.setEmail("perunpere@yahoo.com");
+            perun.setPassword("mile");
+            identityService.saveUser(perun);
+            identityService.createMembership(perun.getId(), "urednici");
+        }
+
+
+        User racko = identityService.createUserQuery().userId("racko").singleResult();
+
+        if (racko == null) {
+            racko = identityService.newUser("racko");
+            racko.setEmail("lazm1701@yahoo.com");
+            racko.setPassword("mile");
+            identityService.saveUser(racko);
+            identityService.createMembership(racko.getId(), "recenzenti");
+        }
+
+        User karapandza = identityService.createUserQuery().userId("karapandza").singleResult();
+
+        if (karapandza == null) {
+            karapandza = identityService.newUser("karapandza");
+            karapandza.setEmail("milanquedinho@gmail.com");
+            karapandza.setPassword("rasa");
+            identityService.saveUser(karapandza);
+            identityService.createMembership(karapandza.getId(), "recenzenti");
+        }
+
     }
 }

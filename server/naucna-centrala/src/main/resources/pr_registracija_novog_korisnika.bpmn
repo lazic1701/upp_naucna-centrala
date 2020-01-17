@@ -46,6 +46,9 @@
           </camunda:formField>
           <camunda:formField id="recenzent" label="Recenzent?" type="boolean" />
           <camunda:formField id="naucneOblasti" label="Naučne oblasti" type="enum">
+            <camunda:validation>
+              <camunda:constraint name="required" />
+            </camunda:validation>
             <camunda:value id="no1" name="Prirodno-matematičke nauke" />
             <camunda:value id="no2" name="Tehničko-tehnološke nauke" />
             <camunda:value id="no3" name="Društveno-humanističke nauke" />
@@ -94,7 +97,8 @@
               <camunda:constraint name="readonly" />
             </camunda:validation>
           </camunda:formField>
-          <camunda:formField id="approveRecenzent" label="Odobri recenzenta?" type="boolean">
+          <camunda:formField id="fp_naucneOblasti" label="Odabrane naučne oblasti" type="enum" />
+          <camunda:formField id="approveRecenzent" label="Odobri recenzenta?" type="boolean" defaultValue="false">
             <camunda:validation>
               <camunda:constraint name="required" />
             </camunda:validation>

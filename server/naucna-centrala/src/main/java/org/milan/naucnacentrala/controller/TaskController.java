@@ -20,7 +20,13 @@ public class TaskController {
     @Autowired
     TasksService _taskService;
 
-    @GetMapping(path = "/{groupId}")
+    @GetMapping(path = "/{id}")
+    public @ResponseBody
+    ResponseEntity<TaskDTO> getTask(@PathVariable String id, HttpServletRequest request) {
+        return new ResponseEntity(_taskService.getTask(id, request), HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/groups/{groupId}")
     public @ResponseBody
     ResponseEntity<List<TaskDTO>> getGroupTasks(@PathVariable String groupId) {
         return new ResponseEntity(_taskService.getGroupTasks(groupId), HttpStatus.OK);
@@ -36,6 +42,14 @@ public class TaskController {
     public @ResponseBody
     ResponseEntity claim(@PathVariable String taskId, HttpServletRequest request) {
         _taskService.claimTask(taskId, request);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @PostMapping(path = "/claim/{taskId}/{variableName}")
+    public @ResponseBody
+    ResponseEntity claimSetUsernameVariable(@PathVariable String taskId,
+                                            @PathVariable String variableName, HttpServletRequest request) {
+        _taskService.claimTask(taskId, request, variableName);
         return new ResponseEntity(HttpStatus.OK);
     }
 

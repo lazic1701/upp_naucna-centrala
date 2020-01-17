@@ -4,8 +4,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
+@Table(name = "_authority")
 public class Authority implements GrantedAuthority {
 
     @Id
@@ -15,6 +18,10 @@ public class Authority implements GrantedAuthority {
 
     @Column(name="name")
     String name;
+
+
+    @ManyToMany(mappedBy = "authorities")
+    private Set<User> users = new HashSet<>();
 
 
     @Override
@@ -42,4 +49,19 @@ public class Authority implements GrantedAuthority {
         this.name = name;
     }
 
+    public Authority(String name, Set<User> users) {
+        this.name = name;
+        this.users = users;
+    }
+
+    public Authority() {
+    }
+
+    public Set<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<User> users) {
+        this.users = users;
+    }
 }
