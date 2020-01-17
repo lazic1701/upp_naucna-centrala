@@ -1,0 +1,12 @@
+.container {
+    height: 92vh;
+}
+
+.row {
+    height: 100%;
+}
+
+.alert-container {
+    height: 100px;
+    margin-top: 30px;
+}

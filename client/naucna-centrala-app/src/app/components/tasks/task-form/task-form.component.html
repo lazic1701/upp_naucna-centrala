@@ -1,0 +1,83 @@
+<div class="container" *ngIf="formFieldsDTO && !successMessage">
+    <div class="row justify-content-center align-items-center pt-5 pb-5">
+      <div class="col-md-6">
+        <h4 class="mb-4" *ngIf="task">{{task.name}}</h4>
+        <form #f="ngForm" (ngSubmit)="onSubmit(f.value, f)" ngNativeValidate >
+            <div *ngFor="let field of formFieldsDTO.formFields" class="mb-3">
+            <label for="{{ field.id }}">{{ field.label }}</label>
+
+            <span *ngIf="field.id == 'password'">
+                <input
+                type="password"
+                class="form-control"
+                name="{{ field.id }}"
+                ngModel
+                *ngIf="field.type.name == 'string'"
+                />
+            </span>
+            <span *ngIf="field.id != 'password'">
+                <input
+                type="text"
+                class="form-control"
+                name="{{ field.id }}"
+                [disabled]="field.validationConstraints && field.validationConstraints[0] && field.validationConstraints[0].name == 'readonly'"
+                [ngModel] = "field.defaultValue"
+                *ngIf="field.type.name == 'string'"
+                />
+            </span>
+            <input
+                type="checkbox"
+                class="ml-3 mt-2"
+                name="{{ field.id }}"
+                [ngModel] = "field.defaultValue"
+                *ngIf="field.type.name == 'boolean'"
+            />
+            <input
+                type="number"
+                class="form-control"
+                name="{{ field.id }}"
+                [ngModel] = "field.defaultValue"
+                *ngIf="field.type.name == 'long'"
+            />
+            <select
+                multiple
+                name="{{ field.id }}"
+                class="form-control"
+                ngModel
+                *ngIf="field.type.name == 'enum' && field.id.includes('_multiselect')"
+            >
+                <option *ngFor="let val of field.enumValues" value="{{ val }}">
+                {{ field.type.values[val] }}
+                </option>
+            </select>
+            <div class="form-group mt-1" *ngIf="field.id.includes('fp_') && field.type.name == 'enum'">
+                <ul>
+                    <li *ngFor="let val of field.enumValues">
+                        {{ field.type.values[val] }}
+                    </li>
+                </ul>
+            </div>
+            <select
+                name="{{ field.id }}"
+                class="form-control"
+                ngModel
+                *ngIf="field.type.name == 'enum' && !field.id.includes('_multiselect')  && !field.id.includes('fp_')"
+            >
+                <option *ngFor="let val of field.enumValues" value="{{ val }}">
+                {{ field.type.values[val] }}
+                </option>
+            </select>
+            </div>
+
+            <input type="submit" class="btn btn-primary mt-3" value="Potvrdi"/>
+        </form>
+
+        <div class="alert alert-danger mt-5 mb-5" *ngIf="errorMessage">{{errorMessage}}</div>
+
+        </div>
+    </div>
+  </div>
+  <div class="container pt-5 pb-5" *ngIf="successMessage">
+      <h3 class="strong mb-4">Uspešno ste izvršili zadatak!</h3>
+      <button class="btn btn-light" routerLink="/tasks">Povratak na zadatke</button>
+  </div>

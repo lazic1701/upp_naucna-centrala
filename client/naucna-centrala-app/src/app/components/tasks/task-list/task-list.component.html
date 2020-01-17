@@ -1,0 +1,53 @@
+<div class="container pt-5 pb-5">
+  <div class="row mb-5"  *ngIf="role === 'ROLE_UREDNIK'">
+    <div class="col-md-12" *ngIf="userTasks">
+      <h4 class="strong mb-4" >Pokretanje akcije</h4>
+      <button class="btn btn-outline-primary mr-3" (click)="onKreiranjeCasopisa()">Kreiranje časopisa</button>
+  </div>
+</div>
+    <div class="row mb-5">
+        <div class="col-md-5" *ngIf="userTasks">
+            <h4 class="strong mb-4">Dodeljeni zadaci</h4>
+            <p *ngIf="userTasks.length == 0">Trenutno nema zadataka.</p>
+            <table class="table table-striped table-sm" *ngIf="userTasks.length > 0">
+                <thead>
+                  <tr>
+                    <th>Naziv zadatka</th>
+                    <th class="td-narrow text-right"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let ut of userTasks">
+                    <td>{{ut.name}}</td>
+                    <td class="td-narrow text-right">
+                        <button class="btn btn-primary" (click)="onExecute(ut.taskId)">Izvrši</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-5" *ngIf="groupTasks">
+            <h4 class="strong ">Grupni zadaci</h4>
+            <span class="badge badge-dark mb-4">{{groupId}}</span>
+            <p *ngIf="groupTasks.length == 0">Trenutno nema zadataka.</p>
+            <table class="table table-striped table-sm" *ngIf="groupTasks.length > 0">
+                <thead>
+                  <tr>
+                    <th>Naziv zadatka</th>
+                    <th class="td-narrow text-right"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let gt of groupTasks">
+                    <td>{{gt.name}}</td>
+                    <td class="td-narrow text-right">
+                        <button class="btn btn-primary" (click)="onClaim(gt.taskId)">Preuzmi</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+        </div>
+    </div>
+</div>

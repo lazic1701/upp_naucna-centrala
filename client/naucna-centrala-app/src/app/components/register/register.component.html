@@ -1,0 +1,63 @@
+<div class="container" *ngIf="formFieldsDTO && !verificationMessage">
+  <div class="row justify-content-center align-items-center pt-5 pb-5">
+    <div class="col-md-6">
+      <h2 class="strong mb-3">Registrujte se u sistem Naučne centrale</h2>
+
+      <form #f="ngForm" (ngSubmit)="onSubmit(f.value, f)" ngNativeValidate >
+        <div *ngFor="let field of formFieldsDTO.formFields" class="mb-3">
+          <label for="{{ field.id }}">{{ field.label }}</label>
+
+          <span *ngIf="field.id == 'password'">
+            <input
+              type="password"
+              class="form-control"
+              name="{{ field.id }}"
+              ngModel
+              *ngIf="field.type.name == 'string'"
+            />
+          </span>
+          <span *ngIf="field.id != 'password'">
+            <input
+              type="text"
+              class="form-control"
+              name="{{ field.id }}"
+              ngModel
+              *ngIf="field.type.name == 'string'"
+            />
+          </span>
+          <input
+            type="checkbox"
+            class="ml-3"
+            name="{{ field.id }}"
+            ngModel
+            *ngIf="field.type.name == 'boolean'"
+          />
+          <input
+            type="number"
+            class="form-control"
+            name="{{ field.id }}"
+            ngModel
+            *ngIf="field.type.name == 'long'"
+          />
+          <select
+            multiple
+            name="{{ field.id }}"
+            class="form-control"
+            ngModel
+            *ngIf="field.type.name == 'enum'"
+          >
+            <option *ngFor="let val of enumValues" value="{{ val }}">
+              {{ field.type.values[val] }}
+            </option>
+          </select>
+        </div>
+
+        <input type="submit" class="btn btn-primary mt-3" value="Registruj se"/>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="container pt-5 pb-5 " *ngIf="verificationMessage">
+    <h3 class="strong text-center">Hvala Vam na registraciji! Aktivacioni link Vam je poslat na email adresu.</h3>
+</div>

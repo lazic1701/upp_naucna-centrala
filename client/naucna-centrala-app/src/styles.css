@@ -1,0 +1,14 @@
+/* You can add global styles to this file, and also import other style files */
+.strong {
+    font-weight: 700 !important;
+}
+
+.td-narrow {
+    width: 40px !important;
+}
+
+.badge {
+    font-size: 89%;
+    text-transform: capitalize;
+    font-weight: 600;
+}
