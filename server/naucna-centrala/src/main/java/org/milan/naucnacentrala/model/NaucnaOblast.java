@@ -20,6 +20,10 @@ public class NaucnaOblast {
     @ManyToMany(mappedBy = "naucneOblasti")
     private Set<Casopis> casopisi = new HashSet<>();
 
+    @OneToMany(mappedBy = "naucnaOblast", fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
+    private Set<NaucniRad> naucniRadovi = new HashSet<>();
+
+
     public NaucnaOblast() {
     }
 
@@ -61,5 +65,13 @@ public class NaucnaOblast {
 
     public void setKorisnici(Set<User> korisnici) {
         this.korisnici = korisnici;
+    }
+
+    public Set<NaucniRad> getNaucniRadovi() {
+        return naucniRadovi;
+    }
+
+    public void setNaucniRadovi(Set<NaucniRad> naucniRadovi) {
+        this.naucniRadovi = naucniRadovi;
     }
 }

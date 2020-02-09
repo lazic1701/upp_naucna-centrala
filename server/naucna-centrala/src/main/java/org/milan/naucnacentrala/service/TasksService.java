@@ -15,6 +15,7 @@ import org.milan.naucnacentrala.model.dto.FormSubmissionDTO;
 import org.milan.naucnacentrala.model.dto.Mapper;
 import org.milan.naucnacentrala.model.dto.TaskDTO;
 import org.milan.naucnacentrala.repository.ICasopisRepository;
+import org.milan.naucnacentrala.repository.INaucnaOblastRepository;
 import org.milan.naucnacentrala.repository.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,6 +45,9 @@ public class TasksService {
 
     @Autowired
     ICasopisRepository _casopisRepo;
+
+    @Autowired
+    INaucnaOblastRepository _naucnaOblastRepo;
 
 
 
@@ -85,6 +89,11 @@ public class TasksService {
         taskService.claim(taskId, username);
     }
 
+    public void claimTask(String taskId, String username) {
+        Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
+        taskService.claim(taskId, username);
+    }
+
     // assign variable with specified name to the username from request
     public void claimTask(String taskId, HttpServletRequest request, String variableName) {
         Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
@@ -113,6 +122,10 @@ public class TasksService {
                     formEnumValues(enumType, 2, username);
                 } else if (ff.getId().contains("recenzenti")) {
                     formEnumValuesFilterNO(enumType, 3, username, task.getProcessInstanceId());
+                } else if (ff.getId().contains("casopisi")) {
+                    formEnumValuesCasopisi(enumType);
+                } else if (ff.getId().contains("Oblast")) {
+                    formEnumValuesNO(enumType);
                 }
             } else if (ff.getId().startsWith("fp_")) {
                 EnumFormType enumType = (EnumFormType) ff.getType();
@@ -124,6 +137,22 @@ public class TasksService {
                     formReviewEnumValuesNO(enumType, task.getProcessInstanceId());
                 }
             }
+        }
+    }
+
+    private void formEnumValuesCasopisi(EnumFormType enumType) {
+        List<Casopis> casopisi = _casopisRepo.findAll();
+
+        for(Casopis c: casopisi) {
+            enumType.getValues().put(String.valueOf(c.getId()), c.getNaziv());
+        }
+    }
+
+    private void formEnumValuesNO(EnumFormType enumType) {
+        List<NaucnaOblast> naucneOblasti = _naucnaOblastRepo.findAll();
+
+        for(NaucnaOblast no: naucneOblasti) {
+            enumType.getValues().put(String.valueOf(no.getId()), no.getNaziv());
         }
     }
 

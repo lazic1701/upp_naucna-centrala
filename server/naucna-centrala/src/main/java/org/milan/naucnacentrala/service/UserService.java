@@ -9,6 +9,8 @@ import org.camunda.bpm.engine.form.TaskFormData;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.task.Task;
 import org.milan.naucnacentrala.exception.BusinessException;
+import org.milan.naucnacentrala.model.Casopis;
+import org.milan.naucnacentrala.model.Clanarina;
 import org.milan.naucnacentrala.model.User;
 import org.milan.naucnacentrala.model.dto.FormFieldsDTO;
 import org.milan.naucnacentrala.model.dto.FormSubmissionDTO;
@@ -16,6 +18,8 @@ import org.milan.naucnacentrala.model.dto.Mapper;
 import org.milan.naucnacentrala.model.dto.UserDTO;
 import org.milan.naucnacentrala.model.enums.Enums;
 import org.milan.naucnacentrala.repository.IAuthorityRepository;
+import org.milan.naucnacentrala.repository.ICasopisRepository;
+import org.milan.naucnacentrala.repository.IClanarinaRepository;
 import org.milan.naucnacentrala.repository.IUserRepository;
 import org.milan.naucnacentrala.security.TokenUtils;
 import org.milan.naucnacentrala.security.auth.JwtAuthenticationRequest;
@@ -30,10 +34,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class UserService {
@@ -53,6 +54,13 @@ public class UserService {
 
     @Autowired
     IUserRepository _userRepo;
+
+    @Autowired
+    ICasopisRepository _casopisRepo;
+
+
+    @Autowired
+    IClanarinaRepository _clanarinaRepo;
 
     @Autowired
     TokenUtils tokenUtils;
@@ -179,5 +187,28 @@ public class UserService {
 
     public String getUsernameFromRequest(HttpServletRequest request) {
         return tokenUtils.getUsernameFromToken(tokenUtils.getToken(request));
+    }
+
+    public void proveraClanarine(String username, int casopisId, String pid) {
+
+        User u = _userRepo.findByUsername(username).get();
+
+        List<Clanarina> clanarine = _clanarinaRepo.findAllByUserIdAndCasopisId(u.getId(), casopisId);
+
+        Date now = new Date(System.currentTimeMillis());
+
+        for (Clanarina c: clanarine) {
+
+            if (c.getPaymentType() != Enums.PaymentType.NAPLACIVANJE_AUTORU) {
+                continue;
+            }
+
+            if (c.getStartDate().compareTo(now) < 0 && c.getEndDate().compareTo(now) > 0) {
+                runtimeService.setVariable(pid, "clanarinaPostoji", true);
+                return;
+            }
+        }
+
+        runtimeService.setVariable(pid, "clanarinaPostoji", false);
     }
 }

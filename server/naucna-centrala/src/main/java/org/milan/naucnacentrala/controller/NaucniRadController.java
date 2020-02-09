@@ -1,7 +1,6 @@
 package org.milan.naucnacentrala.controller;
 
-import org.milan.naucnacentrala.model.dto.TaskDTO;
-import org.milan.naucnacentrala.service.CasopisService;
+import org.milan.naucnacentrala.service.NaucniRadService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,29 +10,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+
 @RestController
-@RequestMapping(value = "/api/casopisi")
-public class CasopisController {
+@RequestMapping(value = "/api/naucni-radovi")
+public class NaucniRadController {
 
     @Autowired
-    CasopisService _casopisService;
+    NaucniRadService _nrService;
 
     @GetMapping(path = "/init")
-    @PreAuthorize("hasRole('ROLE_UREDNIK')")
+    @PreAuthorize("hasRole('ROLE_AUTOR') or hasRole('ROLE_RECENZENT')")
     public @ResponseBody
-    ResponseEntity initKreiranjeCasopisa() {
-        _casopisService.initProcessKreiranjeCasopisa();
+    ResponseEntity initObjavaNaucnogRada(HttpServletRequest request) {
+        _nrService.initObjavaNR(request);
         return new ResponseEntity(HttpStatus.OK);
     }
-
-    @GetMapping(path = "/")
-    public @ResponseBody
-    ResponseEntity getAllCasopisi() {
-        return new ResponseEntity(_casopisService.getAllCasopisi(), HttpStatus.OK);
-    }
-
-
-
-
-
 }

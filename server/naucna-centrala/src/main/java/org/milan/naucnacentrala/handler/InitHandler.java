@@ -49,7 +49,7 @@ public class InitHandler  {
 
         if (demo == null) {
             demo = identityService.newUser("demo");
-            demo.setEmail("lazic1701@gmail.com");
+            demo.setEmail("sep.bbf@gmail.com");
             demo.setPassword("demo");
             identityService.saveUser(demo);
             identityService.createMembership(demo.getId(), "administratori");
@@ -69,7 +69,7 @@ public class InitHandler  {
         User lazoni = identityService.createUserQuery().userId("lazoni").singleResult();
 
         if (lazoni == null) {
-            lazoni = identityService.newUser("prelepi");
+            lazoni = identityService.newUser("lazoni");
             lazoni.setEmail("lazoni.milancello@gmail.com");
             lazoni.setPassword("mile");
             identityService.saveUser(lazoni);
@@ -105,6 +105,16 @@ public class InitHandler  {
             karapandza.setPassword("rasa");
             identityService.saveUser(karapandza);
             identityService.createMembership(karapandza.getId(), "recenzenti");
+        }
+
+        User otore = identityService.createUserQuery().userId("otore").singleResult();
+
+        if (otore == null) {
+            otore = identityService.newUser("otore");
+            otore.setEmail("lazic1701@gmail.com");
+            otore.setPassword("otore");
+            identityService.saveUser(otore);
+            identityService.createMembership(otore.getId(), "autori");
         }
 
     }

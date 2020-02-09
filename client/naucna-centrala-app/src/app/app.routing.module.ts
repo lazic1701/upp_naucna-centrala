@@ -7,6 +7,7 @@ import { LoginComponent } from './components/login/login.component';
 import { TasksComponent } from './components/tasks/tasks.component';
 import { TaskListComponent } from './components/tasks/task-list/task-list.component';
 import { TaskFormComponent } from './components/tasks/task-form/task-form.component';
+import { CasopisiComponent } from './components/casopisi/casopisi.component';
 
 const appRoutes: Routes = [
     { path: '', redirectTo: '/home', pathMatch: 'full'},
@@ -15,10 +16,10 @@ const appRoutes: Routes = [
     { path: 'login', component: LoginComponent },
     { path: 'verification/:processId/:username', component: VerificationComponent },
     { path: 'tasks', component: TasksComponent, children: [
-		{path: '', component: TaskListComponent },
-		{path: ':taskId', component: TaskFormComponent}
-	]}
-    
+      {path: '', component: TaskListComponent },
+      {path: ':taskId', component: TaskFormComponent},
+    ]},
+    { path: 'casopisi', component: CasopisiComponent },
     
     
 ]

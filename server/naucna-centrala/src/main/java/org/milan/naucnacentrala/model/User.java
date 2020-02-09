@@ -67,6 +67,13 @@ public class User implements UserDetails {
     @ManyToMany(mappedBy = "recenzenti")
     private Set<Casopis> casopisiRecenzent = new HashSet<>();
 
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
+    private Set<Clanarina> clanarine = new HashSet<>();
+
+    @OneToMany(mappedBy = "autor", fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
+    private Set<NaucniRad> naucniRadoviAutor = new HashSet<>();
+
+
     public User() {
     }
 
@@ -230,5 +237,21 @@ public class User implements UserDetails {
 
     public void setCasopisiRecenzent(Set<Casopis> casopisiRecenzent) {
         this.casopisiRecenzent = casopisiRecenzent;
+    }
+
+    public Set<Clanarina> getClanarine() {
+        return clanarine;
+    }
+
+    public void setClanarine(Set<Clanarina> clanarine) {
+        this.clanarine = clanarine;
+    }
+
+    public Set<NaucniRad> getNaucniRadoviAutor() {
+        return naucniRadoviAutor;
+    }
+
+    public void setNaucniRadoviAutor(Set<NaucniRad> naucniRadoviAutor) {
+        this.naucniRadoviAutor = naucniRadoviAutor;
     }
 }

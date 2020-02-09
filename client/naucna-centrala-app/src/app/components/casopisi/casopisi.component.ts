@@ -1,15 +1,27 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from "@angular/core";
+import { CasopisService } from 'src/app/services/casopis.service';
 
 @Component({
-  selector: 'app-casopisi',
-  templateUrl: './casopisi.component.html',
-  styleUrls: ['./casopisi.component.css']
+    selector: "app-casopisi",
+    templateUrl: "./casopisi.component.html",
+    styleUrls: ["./casopisi.component.css"]
 })
 export class CasopisiComponent implements OnInit {
 
-  constructor() { }
+	constructor(private casService: CasopisService) {}
+	
+	casopisi: any[] = null;
 
-  ngOnInit() {
-  }
-
+    ngOnInit() {
+		this.fetchCasopisi();
+	}
+	
+	fetchCasopisi() {
+		this.casService.getAllCasopisi().subscribe(
+			(res: any[]) => {
+				this.casopisi = res;
+			}
+		)
+	}
+	
 }

@@ -82,7 +82,7 @@ export class UserService {
     
     getRoleFromStorage(): string {
         let currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        return currentUser.role;
+        return currentUser ? currentUser.role : "";
     }
 
     mapRoleToGroupId(role: string) {

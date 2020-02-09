@@ -37,6 +37,7 @@
                 class="form-control"
                 name="{{ field.id }}"
                 [ngModel] = "field.defaultValue"
+                [disabled]="field.validationConstraints && field.validationConstraints[0] && field.validationConstraints[0].name == 'readonly'"
                 *ngIf="field.type.name == 'long'"
             />
             <select

@@ -4,7 +4,9 @@ import org.milan.naucnacentrala.model.enums.Enums;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "_casopis")
@@ -48,19 +50,17 @@ public class Casopis {
             joinColumns = @JoinColumn(name = "casopis_id", referencedColumnName = "id"))
     private List<NaucnaOblast> naucneOblasti = new ArrayList<>();
 
+    @OneToMany(mappedBy = "casopis", fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
+    private Set<Clanarina> clanarine = new HashSet<>();
+
+    @OneToMany(mappedBy = "casopis", fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
+    private Set<NaucniRad> naucniRadovi = new HashSet<>();
+
+
     public Casopis() {
     }
 
-    public Casopis(String naziv, String issn, Enums.PaymentType nacinNaplate, boolean active, User glavniUrednik, List<User> urednici, List<User> recenzenti, List<NaucnaOblast> naucneOblasti) {
-        this.naziv = naziv;
-        this.issn = issn;
-        this.nacinNaplate = nacinNaplate;
-        this.active = active;
-        this.glavniUrednik = glavniUrednik;
-        this.urednici = urednici;
-        this.recenzenti = recenzenti;
-        this.naucneOblasti = naucneOblasti;
-    }
+
 
     public int getId() {
         return id;
@@ -132,5 +132,21 @@ public class Casopis {
 
     public void setNaucneOblasti(List<NaucnaOblast> naucneOblasti) {
         this.naucneOblasti = naucneOblasti;
+    }
+
+    public Set<Clanarina> getClanarine() {
+        return clanarine;
+    }
+
+    public void setClanarine(Set<Clanarina> clanarine) {
+        this.clanarine = clanarine;
+    }
+
+    public Set<NaucniRad> getNaucniRadovi() {
+        return naucniRadovi;
+    }
+
+    public void setNaucniRadovi(Set<NaucniRad> naucniRadovi) {
+        this.naucniRadovi = naucniRadovi;
     }
 }

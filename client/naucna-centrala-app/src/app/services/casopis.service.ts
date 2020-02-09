@@ -15,4 +15,8 @@ export class CasopisService {
 		return this.http.get(this.ENDPOINT_URL + "/init");
 	}
 
+	getAllCasopisi() {
+		return this.http.get(this.ENDPOINT_URL + '/');
+	}
+
 }

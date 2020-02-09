@@ -12,3 +12,7 @@
     text-transform: capitalize;
     font-weight: 600;
 }
+
+.btn {
+    letter-spacing: 0.5px;
+}

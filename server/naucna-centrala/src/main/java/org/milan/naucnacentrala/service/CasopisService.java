@@ -3,9 +3,11 @@ package org.milan.naucnacentrala.service;
 import org.camunda.bpm.engine.IdentityService;
 import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
+import org.milan.naucnacentrala.exception.BusinessException;
 import org.milan.naucnacentrala.model.Casopis;
 import org.milan.naucnacentrala.model.NaucnaOblast;
 import org.milan.naucnacentrala.model.User;
+import org.milan.naucnacentrala.model.dto.CasopisDTO;
 import org.milan.naucnacentrala.model.dto.FormSubmissionDTO;
 import org.milan.naucnacentrala.model.enums.Enums;
 import org.milan.naucnacentrala.repository.ICasopisRepository;
@@ -15,11 +17,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CasopisService {
 
-    private final String REG_PROCESS_INSTANCE_ID = "Process_Kreiranje_Casopisa";
+    private final String KRCAS_PROCESS_INSTANCE_ID = "Process_Kreiranje_Casopisa";
 
     @Autowired
     ICasopisRepository _casopisRepo;
@@ -30,13 +33,16 @@ public class CasopisService {
     @Autowired
     INaucnaOblastRepository _noRepo;
 
-
     @Autowired
     IUserRepository _userRepo;
 
 
+    public List<CasopisDTO> getAllCasopisi() {
+        return _casopisRepo.findAll().stream().map(c -> CasopisDTO.formDto(c)).collect(Collectors.toList());
+    }
+
     public void initProcessKreiranjeCasopisa() {
-        ProcessInstance pi = runtimeService.startProcessInstanceByKey(this.REG_PROCESS_INSTANCE_ID);
+        ProcessInstance pi = runtimeService.startProcessInstanceByKey(this.KRCAS_PROCESS_INSTANCE_ID);
     }
 
     public int createCasopis(List<FormSubmissionDTO> casopisForm, String username) {
@@ -107,5 +113,17 @@ public class CasopisService {
         Casopis c = _casopisRepo.findById(casopisId).get();
         c.setActive(true);
         _casopisRepo.save(c);
+    }
+
+    public void isOpenAccess(List<FormSubmissionDTO> casopisForm, String pid) {
+
+        for (FormSubmissionDTO fs : casopisForm) {
+            int casopisId = Integer.valueOf(fs.getFieldValue());
+            Casopis c = _casopisRepo.findById(casopisId).get();
+
+            runtimeService.setVariable(pid, "casopisId", c.getId());
+            runtimeService.setVariable(pid, "openAccess", c.getNacinNaplate() == Enums.PaymentType.NAPLACIVANJE_AUTORU);
+        }
+
     }
 }
