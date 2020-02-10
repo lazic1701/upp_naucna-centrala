@@ -5,10 +5,7 @@ import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.TaskService;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.task.Task;
-import org.milan.naucnacentrala.model.Casopis;
-import org.milan.naucnacentrala.model.NaucnaOblast;
-import org.milan.naucnacentrala.model.NaucniRad;
-import org.milan.naucnacentrala.model.User;
+import org.milan.naucnacentrala.model.*;
 import org.milan.naucnacentrala.model.dto.FormSubmissionDTO;
 import org.milan.naucnacentrala.model.enums.Enums;
 import org.milan.naucnacentrala.repository.ICasopisRepository;
@@ -17,8 +14,18 @@ import org.milan.naucnacentrala.repository.INaucniRadRepository;
 import org.milan.naucnacentrala.repository.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ResourceUtils;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 @Service
@@ -47,6 +54,9 @@ public class NaucniRadService {
 
     @Autowired
     TaskService taskService;
+
+    @Autowired
+    ServletContext context;
 
 
     private final String OBJNR_PROCESS_INSTANCE_ID = "Process_Obrade_PT";
@@ -90,4 +100,65 @@ public class NaucniRadService {
 
         return nr;
     }
+
+    public void saveKoautor(int nrId, List<FormSubmissionDTO> nrForm) {
+
+        NaucniRad nr = _nrRepo.findById(nrId).get();
+
+        Koautor ka = new Koautor();
+
+        for (FormSubmissionDTO fs : nrForm) {
+
+
+            if (fs.getFieldId().equals("imeKA")) {
+                ka.setIme(fs.getFieldValue());
+            } else if (fs.getFieldId().equals("emailKA")) {
+                ka.setEmail(fs.getFieldValue());
+            } else if (fs.getFieldId().equals("gradKA")) {
+                ka.setGrad(fs.getFieldValue());
+            } else if (fs.getFieldId().equals("drzavaKA")) {
+                ka.setDrzava(fs.getFieldValue());
+            }
+
+        }
+
+        ka.setNaucniRad(nr);
+        nr.getKoautori().add(ka);
+        _nrRepo.save(nr);
+
+
+    }
+
+
+    public void savePDF(MultipartFile file, String pid) throws IOException {
+        int id = (int) runtimeService.getVariable(pid, "nrId");
+        NaucniRad nr = _nrRepo.findById(id).get();
+        String path = "src/main/resources/uploads";
+
+        File f = new File(path + "/" + nr.getId() + "_" + nr.getNaslov() + ".pdf");
+        f.createNewFile();
+        String absolutePath = f.getAbsolutePath();
+
+        Path filepath = Paths.get(absolutePath);
+        System.out.println("FILE PATH: " + filepath.toString());
+
+        try (OutputStream os = Files.newOutputStream(filepath)) {
+            os.write(file.getBytes());
+            nr.setFilePath(filepath.toString());
+            _nrRepo.save(nr);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+
+        }
+
+    }
+
+    public File getPDF(String pid) throws FileNotFoundException {
+        int id = (int) runtimeService.getVariable(pid, "nrId");
+        NaucniRad nr = _nrRepo.findById(id).get();
+
+        return ResourceUtils.getFile(
+                nr.getFilePath());
+    }
 }
+

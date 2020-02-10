@@ -22,14 +22,20 @@ public class NaucniRad {
     @Column
     private String kljucniPojmovi;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+    @Column
+    private String filePath;
+
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch=FetchType.EAGER)
     private NaucnaOblast naucnaOblast;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch=FetchType.EAGER)
     private Casopis casopis;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch=FetchType.EAGER)
     private User autor;
+
+    @OneToMany(mappedBy = "naucniRad", cascade = CascadeType.ALL)
+    private Set<Koautor> koautori = new HashSet<>();
 
 
     public NaucniRad() {
@@ -89,5 +95,21 @@ public class NaucniRad {
 
     public void setAutor(User autor) {
         this.autor = autor;
+    }
+
+    public Set<Koautor> getKoautori() {
+        return koautori;
+    }
+
+    public void setKoautori(Set<Koautor> koautori) {
+        this.koautori = koautori;
+    }
+
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
     }
 }

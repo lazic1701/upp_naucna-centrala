@@ -15,7 +15,7 @@
                 *ngIf="field.type.name == 'string'"
                 />
             </span>
-            <span *ngIf="field.id != 'password'">
+            <span *ngIf="field.id != 'password' && field.id != 'file_pdf' && field.id != 'review_pdf'">
                 <input
                 type="text"
                 class="form-control"
@@ -40,6 +40,18 @@
                 [disabled]="field.validationConstraints && field.validationConstraints[0] && field.validationConstraints[0].name == 'readonly'"
                 *ngIf="field.type.name == 'long'"
             />
+            <input
+                type="file"
+                class="form-control"
+                name="pdf_file"
+                (change)="handleUploadPDF($event.target.files)"
+                accept=".pdf"
+
+                *ngIf="field.id == 'file_pdf'"
+            />
+            <div *ngIf="field.id == 'review_pdf'">
+                <button class="btn btn-dark" type="button" (click)="onPregledajte()">Pregledajte</button>
+            </div>
             <select
                 multiple
                 name="{{ field.id }}"

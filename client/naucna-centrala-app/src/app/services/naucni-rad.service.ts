@@ -16,5 +16,16 @@ export class NaucniRadService {
 		return this.http.get(this.ENDPOINT_URL + "/init");
 	}
 
+	uploadPDF(file, pid) {
+		return this.http.post(this.ENDPOINT_URL + "/file/" + pid, file);
+	}
+
+	downloadPDF(pid) {
+		const httpOptions = {
+			'responseType'  : 'arraybuffer' as 'json'
+		  };
+		return this.http.get(this.ENDPOINT_URL + "/file/" + pid, httpOptions);
+	}
+
 
 }
