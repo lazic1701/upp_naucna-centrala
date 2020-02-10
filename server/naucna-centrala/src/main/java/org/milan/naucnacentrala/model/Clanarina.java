@@ -3,11 +3,12 @@ package org.milan.naucnacentrala.model;
 import org.milan.naucnacentrala.model.enums.Enums;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity
 @Table(name = "_clanarina")
-public class Clanarina {
+public class Clanarina implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

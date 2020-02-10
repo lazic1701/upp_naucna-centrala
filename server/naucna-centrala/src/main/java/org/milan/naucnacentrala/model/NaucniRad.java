@@ -1,12 +1,15 @@
 package org.milan.naucnacentrala.model;
 
+import org.milan.naucnacentrala.model.enums.Enums;
+
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "_naucni_rad")
-public class NaucniRad {
+public class NaucniRad implements Serializable {
 
 
     @Id
@@ -25,6 +28,10 @@ public class NaucniRad {
     @Column
     private String filePath;
 
+    @Column
+    @Enumerated(EnumType.STRING)
+    private Enums.NaucniRadStatus status;
+
     @ManyToOne(cascade = CascadeType.PERSIST, fetch=FetchType.EAGER)
     private NaucnaOblast naucnaOblast;
 
@@ -36,6 +43,9 @@ public class NaucniRad {
 
     @OneToMany(mappedBy = "naucniRad", cascade = CascadeType.ALL)
     private Set<Koautor> koautori = new HashSet<>();
+
+    @OneToMany(mappedBy = "naucniRad", cascade = CascadeType.ALL)
+    private Set<Recenzija> recenzije = new HashSet<>();
 
 
     public NaucniRad() {
@@ -111,5 +121,21 @@ public class NaucniRad {
 
     public void setFilePath(String filePath) {
         this.filePath = filePath;
+    }
+
+    public Enums.NaucniRadStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(Enums.NaucniRadStatus status) {
+        this.status = status;
+    }
+
+    public Set<Recenzija> getRecenzije() {
+        return recenzije;
+    }
+
+    public void setRecenzije(Set<Recenzija> recenzije) {
+        this.recenzije = recenzije;
     }
 }

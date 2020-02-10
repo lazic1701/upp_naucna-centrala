@@ -4,12 +4,13 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "_authority")
-public class Authority implements GrantedAuthority {
+public class Authority implements GrantedAuthority, Serializable {
 
     @Id
     @Column(name="id")

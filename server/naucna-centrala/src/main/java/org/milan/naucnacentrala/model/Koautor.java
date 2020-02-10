@@ -1,10 +1,11 @@
 package org.milan.naucnacentrala.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "_koautor")
-public class Koautor {
+public class Koautor implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

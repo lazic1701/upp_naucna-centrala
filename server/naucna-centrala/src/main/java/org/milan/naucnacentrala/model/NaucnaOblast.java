@@ -1,12 +1,13 @@
 package org.milan.naucnacentrala.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "_naucna_oblast")
-public class NaucnaOblast {
+public class NaucnaOblast implements Serializable {
 
     @Id
     private String id;

@@ -77,6 +77,7 @@ public class NaucniRadService {
         nr = parseForm(nrForm, nr);
         nr.setCasopis(c);
         nr.setAutor(u);
+        nr.setStatus(Enums.NaucniRadStatus.PRIJAVLJEN);
 
         nr = _nrRepo.save(nr);
 
@@ -159,6 +160,37 @@ public class NaucniRadService {
 
         return ResourceUtils.getFile(
                 nr.getFilePath());
+    }
+
+    public void sacuvajRecenzije(List<FormSubmissionDTO> form, int nrId, String recUsername) {
+
+        NaucniRad nr = _nrRepo.findById(nrId).get();
+        User r = _userRepo.findByUsername(recUsername).get();
+
+        Recenzija rec = new Recenzija();
+
+        rec.setNaucniRad(nr);
+        rec.setRecenzent(r);
+
+
+        for (FormSubmissionDTO fs : form) {
+            if (fs.getFieldId().equals("odluka")) {
+                if (fs.getFieldValue().equals("o1")) {
+                    rec.setOdluka(Enums.OdlukaRecenzenta.PRIHVATITI);
+                } else if (fs.getFieldValue().equals("o2")) {
+                    rec.setOdluka(Enums.OdlukaRecenzenta.ODBITI);
+                } else if (fs.getFieldValue().equals("o3")) {
+                    rec.setOdluka(Enums.OdlukaRecenzenta.PRIHVATITI_UZ_MANJE_ISPRAVKE);
+                } else if (fs.getFieldValue().equals("o4")) {
+                    rec.setOdluka(Enums.OdlukaRecenzenta.USLOVNO_PRIHVATITI_UZ_VECE_ISPRAVKE);
+                }
+            } else if (fs.getFieldId().equals("komentarRec")) {
+                rec.setTekst(fs.getFieldValue());
+            }
+        }
+
+        nr.getRecenzije().add(rec);
+        _nrRepo.save(nr);
     }
 }
 

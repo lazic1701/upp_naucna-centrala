@@ -9,18 +9,13 @@ import org.camunda.bpm.engine.form.TaskFormData;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.task.Task;
 import org.milan.naucnacentrala.exception.BusinessException;
-import org.milan.naucnacentrala.model.Casopis;
-import org.milan.naucnacentrala.model.Clanarina;
-import org.milan.naucnacentrala.model.User;
+import org.milan.naucnacentrala.model.*;
 import org.milan.naucnacentrala.model.dto.FormFieldsDTO;
 import org.milan.naucnacentrala.model.dto.FormSubmissionDTO;
 import org.milan.naucnacentrala.model.dto.Mapper;
 import org.milan.naucnacentrala.model.dto.UserDTO;
 import org.milan.naucnacentrala.model.enums.Enums;
-import org.milan.naucnacentrala.repository.IAuthorityRepository;
-import org.milan.naucnacentrala.repository.ICasopisRepository;
-import org.milan.naucnacentrala.repository.IClanarinaRepository;
-import org.milan.naucnacentrala.repository.IUserRepository;
+import org.milan.naucnacentrala.repository.*;
 import org.milan.naucnacentrala.security.TokenUtils;
 import org.milan.naucnacentrala.security.auth.JwtAuthenticationRequest;
 import org.milan.naucnacentrala.security.auth.UserTokenState;
@@ -67,6 +62,12 @@ public class UserService {
 
     @Autowired
     IAuthorityRepository _authorityRepository;
+
+    @Autowired
+    INaucniRadRepository _nrRepo;
+
+    @Autowired
+    INaucnaOblastRepository _noRepo;
 
     @Autowired
     private AuthenticationManager manager;
@@ -210,5 +211,46 @@ public class UserService {
         }
 
         runtimeService.setVariable(pid, "clanarinaPostoji", false);
+    }
+
+    public User odabirUrednikaNO(int nrId) {
+
+        NaucniRad nr = _nrRepo.findById(nrId).get();
+        NaucnaOblast no = nr.getNaucnaOblast();
+        List<User> urednici = _userRepo.findAllByAuthorityId(2);
+
+        for (User u: urednici) {
+            for (NaucnaOblast uNo: u.getNaucneOblastiUser()) {
+                if (uNo.getId().equals(no.getId())) {
+                    return u;
+                }
+            }
+        }
+
+        return nr.getCasopis().getGlavniUrednik();
+
+    }
+
+    public List<User> getRecenzentiFilter(int nrId) {
+
+        List<User> retVal = new ArrayList<>();
+
+        NaucniRad nr = _nrRepo.findById(nrId).get();
+        NaucnaOblast no = nr.getNaucnaOblast();
+
+        List<User> recenzenti = _userRepo.findAllByAuthorityId(3);
+
+        for(User r: recenzenti) {
+            for(NaucnaOblast rNo: r.getNaucneOblastiUser()) {
+                if (rNo.getId().equals(no.getId())) {
+                    retVal.add(r);
+                }
+            }
+        }
+
+        // ovde integracija UDD geoprostorne pretrage i MoreLikeThis
+
+        return retVal;
+
     }
 }

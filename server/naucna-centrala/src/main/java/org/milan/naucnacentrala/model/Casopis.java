@@ -3,6 +3,7 @@ package org.milan.naucnacentrala.model;
 import org.milan.naucnacentrala.model.enums.Enums;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "_casopis")
-public class Casopis {
+public class Casopis implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

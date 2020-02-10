@@ -70,7 +70,7 @@ public class InitHandler  {
 
         if (lazoni == null) {
             lazoni = identityService.newUser("lazoni");
-            lazoni.setEmail("lazoni.milancello@gmail.com");
+            lazoni.setEmail("lazoni.milancello@google.com");
             lazoni.setPassword("mile");
             identityService.saveUser(lazoni);
             identityService.createMembership(lazoni.getId(), "urednici");
@@ -102,9 +102,29 @@ public class InitHandler  {
         if (karapandza == null) {
             karapandza = identityService.newUser("karapandza");
             karapandza.setEmail("milanquedinho@gmail.com");
-            karapandza.setPassword("rasa");
+            karapandza.setPassword("mile");
             identityService.saveUser(karapandza);
             identityService.createMembership(karapandza.getId(), "recenzenti");
+        }
+
+        User recen = identityService.createUserQuery().userId("recen").singleResult();
+
+        if (recen == null) {
+            recen = identityService.newUser("recen");
+            recen.setEmail("lazoni.milancello@gmail.com");
+            recen.setPassword("recen");
+            identityService.saveUser(recen);
+            identityService.createMembership(recen.getId(), "recenzenti");
+        }
+
+        User lebron = identityService.createUserQuery().userId("lebron").singleResult();
+
+        if (lebron == null) {
+            lebron = identityService.newUser("lebron");
+            lebron.setEmail("lazicy@gmail.com");
+            lebron.setPassword("lebron");
+            identityService.saveUser(lebron);
+            identityService.createMembership(lebron.getId(), "recenzenti");
         }
 
         User otore = identityService.createUserQuery().userId("otore").singleResult();

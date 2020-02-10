@@ -2,10 +2,8 @@ package org.milan.naucnacentrala.service.camunda.nr;
 
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
-import org.milan.naucnacentrala.model.NaucniRad;
 import org.milan.naucnacentrala.model.User;
-import org.milan.naucnacentrala.model.enums.Enums;
-import org.milan.naucnacentrala.repository.INaucniRadRepository;
+import org.milan.naucnacentrala.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.mail.SimpleMailMessage;
@@ -13,10 +11,10 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 @Service
-public class OdbijanjeNRIEmailAutoru implements JavaDelegate {
+public class OdabirUrednikaNaucneOblasti implements JavaDelegate {
 
     @Autowired
-    INaucniRadRepository _nrRepo;
+    UserService _userService;
 
     @Autowired
     private Environment environment;
@@ -26,22 +24,20 @@ public class OdbijanjeNRIEmailAutoru implements JavaDelegate {
 
     @Override
     public void execute(DelegateExecution delegateExecution) throws Exception {
-
-        System.out.println("[OdbijanjeNRIEmailAutoru]: start");
+        System.out.println("[OdabirUrednikaNaucneOblasti]: start");
 
         int nrId = (int) delegateExecution.getVariable("nrId");
 
-        NaucniRad nr = _nrRepo.findById(nrId).get();
+        User urednikNO = _userService.odabirUrednikaNO(nrId);
 
-        nr.setStatus(Enums.NaucniRadStatus.ODBIJEN);
-        _nrRepo.save(nr);
+        delegateExecution.setVariable("assignedUser_UREDNIK_NO", urednikNO.getUsername());
 
-        String messageBody =
-                "Sa dubokim žaljenjem Vas obaveštavamo da je vaš naučni rad pod nazivom \"" + nr.getNaslov()
-                + "\" odbijen zbog tematskih nepoklapanja. Pokušajte ponovo.";
-        sendEmail(nr.getAutor(), messageBody);
+        System.out.println("AssignedUser_UREDNIK_NO: " + urednikNO.getUsername());
+
+        sendEmail(urednikNO, "Odaberite recenzente.");
+
+
     }
-
     private void sendEmail(User u, String messageBody) {
 
         SimpleMailMessage mail = new SimpleMailMessage();
@@ -49,7 +45,7 @@ public class OdbijanjeNRIEmailAutoru implements JavaDelegate {
         mail.setTo(u.getEmail());
 
         mail.setFrom(environment.getProperty("spring.mail.username"));
-        mail.setSubject("NC Obaveštenje: Naučni rad odbijen");
+        mail.setSubject("NC Obaveštenje: Dodeljen Vam je zadatak da izaberete recenzente");
 
 
         mail.setText("Poštovani,"+
@@ -57,4 +53,5 @@ public class OdbijanjeNRIEmailAutoru implements JavaDelegate {
 
         jmSender.send(mail);
     }
+
 }

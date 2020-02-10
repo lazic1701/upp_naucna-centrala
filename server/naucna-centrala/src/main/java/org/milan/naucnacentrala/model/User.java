@@ -5,11 +5,12 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.*;
 
 @Entity
 @Table(name = "_user")
-public class User implements UserDetails {
+public class User implements UserDetails, Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -72,6 +73,9 @@ public class User implements UserDetails {
 
     @OneToMany(mappedBy = "autor", fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     private Set<NaucniRad> naucniRadoviAutor = new HashSet<>();
+
+    @OneToMany(mappedBy = "recenzent", fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
+    private Set<Recenzija> recenzije = new HashSet<>();
 
 
     public User() {
@@ -253,5 +257,13 @@ public class User implements UserDetails {
 
     public void setNaucniRadoviAutor(Set<NaucniRad> naucniRadoviAutor) {
         this.naucniRadoviAutor = naucniRadoviAutor;
+    }
+
+    public Set<Recenzija> getRecenzije() {
+        return recenzije;
+    }
+
+    public void setRecenzije(Set<Recenzija> recenzije) {
+        this.recenzije = recenzije;
     }
 }

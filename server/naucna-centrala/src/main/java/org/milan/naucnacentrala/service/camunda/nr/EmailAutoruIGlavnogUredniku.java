@@ -34,8 +34,6 @@ public class EmailAutoruIGlavnogUredniku implements JavaDelegate {
 
         int nrId = (int) delegateExecution.getVariable("nrId");
 
-
-
         NaucniRad nr = _naucniRadRepo.findById(nrId).get();
 
         sendEmail(nr.getAutor(), "Uspešno ste prijavili naučni rad.");

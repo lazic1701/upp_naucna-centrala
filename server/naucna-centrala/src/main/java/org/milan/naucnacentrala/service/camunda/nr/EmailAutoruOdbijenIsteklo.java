@@ -4,6 +4,7 @@ import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.milan.naucnacentrala.model.NaucniRad;
 import org.milan.naucnacentrala.model.User;
+import org.milan.naucnacentrala.model.enums.Enums;
 import org.milan.naucnacentrala.repository.INaucniRadRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -33,7 +34,9 @@ public class EmailAutoruOdbijenIsteklo implements JavaDelegate {
         int nrId = (int) delegateExecution.getVariable("nrId");
 
         NaucniRad nr = _nrRepo.findById(nrId).get();
-        _nrRepo.deleteById(nrId);
+
+        nr.setStatus(Enums.NaucniRadStatus.ODBIJEN);
+        _nrRepo.save(nr);
 
         String messageBody =
                 "Sa dubokim žaljenjem Vas obaveštavamo da je vaš naučni rad pod nazivom \"" + nr.getNaslov()
