@@ -15,7 +15,11 @@ import { LoginComponent } from './components/login/login.component';
 import { TasksComponent } from './components/tasks/tasks.component';
 import { TaskFormComponent } from './components/tasks/task-form/task-form.component';
 import { TaskListComponent } from './components/tasks/task-list/task-list.component';
-import { CasopisiComponent } from './components/casopisi/casopisi.component'
+import { CasopisiComponent } from './components/casopisi/casopisi.component';
+import { CasopisiUrednikComponent } from './components/casopisi-urednik/casopisi-urednik.component';
+import { CasopisiListComponent } from './components/casopisi/casopisi-list/casopisi-list.component';
+import { CasopisComponent } from './components/casopisi/casopis/casopis.component';
+import { PorudzbineComponent } from './components/porudzbine/porudzbine.component'
 
 @NgModule({
   declarations: [
@@ -28,7 +32,11 @@ import { CasopisiComponent } from './components/casopisi/casopisi.component'
     TasksComponent,
     TaskFormComponent,
     TaskListComponent,
-    CasopisiComponent
+    CasopisiComponent,
+    CasopisiUrednikComponent,
+    CasopisiListComponent,
+    CasopisComponent,
+    PorudzbineComponent
   ],
   imports: [
     BrowserModule,

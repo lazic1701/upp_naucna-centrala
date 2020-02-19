@@ -5,7 +5,7 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class CasopisService {
-
+	
 	
 	private ENDPOINT_URL: string = "api/casopisi";
 
@@ -17,6 +17,10 @@ export class CasopisService {
 
 	getAllCasopisi() {
 		return this.http.get(this.ENDPOINT_URL + '/');
+	}
+
+	getAllGlavniUrednikCasopisi(glavniUrednikId: number) {
+		return this.http.get(this.ENDPOINT_URL + '/glavni-urednik/' + glavniUrednikId);
 	}
 
 }

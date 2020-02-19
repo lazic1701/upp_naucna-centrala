@@ -41,6 +41,10 @@ public class CasopisService {
         return _casopisRepo.findAll().stream().map(c -> CasopisDTO.formDto(c)).collect(Collectors.toList());
     }
 
+    public List<CasopisDTO> getAllGlavniUrednikCasopisi(int glavniUrednikId) {
+        return _casopisRepo.findAllByGlavniUrednikId(glavniUrednikId).stream().map(c -> CasopisDTO.formDto(c)).collect(Collectors.toList());
+    }
+
     public void initProcessKreiranjeCasopisa() {
         ProcessInstance pi = runtimeService.startProcessInstanceByKey(this.KRCAS_PROCESS_INSTANCE_ID);
     }
@@ -126,4 +130,6 @@ public class CasopisService {
         }
 
     }
+
+
 }

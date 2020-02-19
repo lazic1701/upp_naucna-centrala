@@ -8,6 +8,10 @@ import { TasksComponent } from './components/tasks/tasks.component';
 import { TaskListComponent } from './components/tasks/task-list/task-list.component';
 import { TaskFormComponent } from './components/tasks/task-form/task-form.component';
 import { CasopisiComponent } from './components/casopisi/casopisi.component';
+import { CasopisiUrednikComponent } from './components/casopisi-urednik/casopisi-urednik.component';
+import { CasopisiListComponent } from './components/casopisi/casopisi-list/casopisi-list.component';
+import { CasopisComponent } from './components/casopisi/casopis/casopis.component';
+import { PorudzbineComponent } from './components/porudzbine/porudzbine.component';
 
 const appRoutes: Routes = [
     { path: '', redirectTo: '/home', pathMatch: 'full'},
@@ -19,7 +23,14 @@ const appRoutes: Routes = [
       {path: '', component: TaskListComponent },
       {path: ':taskId', component: TaskFormComponent},
     ]},
-    { path: 'casopisi', component: CasopisiComponent },
+    { path: 'casopisi', component: CasopisiComponent, children: [
+      {path: '', component: CasopisiListComponent },
+      {path: ':id', component: CasopisComponent }
+    ] },
+    
+    { path: 'casopisi-urednik/:id', component: CasopisiUrednikComponent },
+    
+    { path: 'porudzbine', component: PorudzbineComponent }
     
     
 ]

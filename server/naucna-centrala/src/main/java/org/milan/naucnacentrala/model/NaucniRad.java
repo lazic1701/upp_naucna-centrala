@@ -29,6 +29,9 @@ public class NaucniRad implements Serializable {
     private String filePath;
 
     @Column
+    private double cena;
+
+    @Column
     @Enumerated(EnumType.STRING)
     private Enums.NaucniRadStatus status;
 
@@ -137,5 +140,13 @@ public class NaucniRad implements Serializable {
 
     public void setRecenzije(Set<Recenzija> recenzije) {
         this.recenzije = recenzije;
+    }
+
+    public double getCena() {
+        return cena;
+    }
+
+    public void setCena(double cena) {
+        this.cena = cena;
     }
 }

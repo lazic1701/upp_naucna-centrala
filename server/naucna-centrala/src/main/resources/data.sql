@@ -31,7 +31,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `_casopis` WRITE;
 /*!40000 ALTER TABLE `_casopis` DISABLE KEYS */;
-INSERT INTO `_casopis` (`id`, `active`, `issn`, `nacin_naplate`, `naziv`, `glavni_urednik_id`) VALUES (1,1,'658915-98121','NAPLACIVANJE_AUTORU','Allegro',2);
+INSERT INTO `_casopis` (`id`, `active`, `issn`, `nacin_naplate`, `naziv`, `glavni_urednik_id`, `is_registered`, `seller_id`) VALUES (1,1,'658915-98121','NAPLACIVANJE_AUTORU','Allegro',2, false, 0),(2,1,'19813523-651321','NAPLACIVANJE_CITAOCU','Scienza delle Costruzioni di Oggi',2, false, 0),(3,1,'118916-851981','NAPLACIVANJE_CITAOCU','Sciences de l\'éducation',2, true, 4);
 /*!40000 ALTER TABLE `_casopis` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -41,7 +41,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `_casopis_naucnaoblast` WRITE;
 /*!40000 ALTER TABLE `_casopis_naucnaoblast` DISABLE KEYS */;
-INSERT INTO `_casopis_naucnaoblast` (`casopis_id`, `naucnaoblast_id`) VALUES (1,'no3'),(1,'no5');
+INSERT INTO `_casopis_naucnaoblast` (`casopis_id`, `naucnaoblast_id`) VALUES (1,'no3'),(1,'no5'),(2,'no1'),(2,'no2'),(3,'no3'),(3,'no5');
 /*!40000 ALTER TABLE `_casopis_naucnaoblast` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -51,7 +51,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `_casopis_recenzent` WRITE;
 /*!40000 ALTER TABLE `_casopis_recenzent` DISABLE KEYS */;
-INSERT INTO `_casopis_recenzent` (`casopis_id`, `user_id`) VALUES (1,5),(1,6);
+INSERT INTO `_casopis_recenzent` (`casopis_id`, `user_id`) VALUES (1,5),(1,6),(2,8),(2,9),(3,6),(3,8);
 /*!40000 ALTER TABLE `_casopis_recenzent` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -99,6 +99,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `_naucni_rad` WRITE;
 /*!40000 ALTER TABLE `_naucni_rad` DISABLE KEYS */;
+INSERT INTO `_naucni_rad` (`id`, `apstrakt`, `cena`, `file_path`, `kljucni_pojmovi`, `naslov`, `status`, `autor_id`, `casopis_id`, `naucna_oblast_id`) VALUES (1,'U skorije vreme postoje odre?ene sumnje u ispravnost pojma „renesansa” primenjenog.', '32', 'C:\\Users\\lazic\\Documents\\GitHub\\upp-naucna-centrala\\server\\naucna-centrala\\src\\main\\resources\\uploads\\1_Arhitektura renesanse.pdf','renesansa, arhitektura, italija, 15 vek','Arhitektura renesanse','ODOBREN',7,2,'no3');
 /*!40000 ALTER TABLE `_naucni_rad` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -108,6 +109,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `_recenzija` WRITE;
 /*!40000 ALTER TABLE `_recenzija` DISABLE KEYS */;
+INSERT INTO `_recenzija` (`id`, `odluka`, `tekst`, `naucni_rad_id`, `user_id`) VALUES (1,'PRIHVATITI','Super ideja skroz.',1,9),(2,'USLOVNO_PRIHVATITI_UZ_VECE_ISPRAVKE','Odlicno samo mora bolje.',1,8);
 /*!40000 ALTER TABLE `_recenzija` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -150,4 +152,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-02-10 13:34:34
+-- Dump completed on 2020-02-12 11:56:42

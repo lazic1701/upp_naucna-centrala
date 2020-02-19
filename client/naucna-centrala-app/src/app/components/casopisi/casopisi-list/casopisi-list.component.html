@@ -1,0 +1,12 @@
+<div class="container pt-5 pb-5" *ngIf="casopisi">
+    <ng-container *ngFor="let c of casopisi">
+        <div class="card  mb-3" style="max-width: 30rem;" *ngIf="c.active">
+            <div class="card-header">{{c.issn}}</div>
+            <div class="card-body">
+              <h4 class="card-title">{{c.naziv}}</h4>
+              <a href="javascript:;" (click)="onKupiCasopis(c)" class="card-link" *ngIf="c.sellerId != 0">Kupite</a>
+              <a href="javascript:;" (click)="onKupiClanarinu(c)" class="card-link" *ngIf="c.sellerId != 0">Pretplata</a>
+            </div>
+          </div>
+    </ng-container>
+  </div>

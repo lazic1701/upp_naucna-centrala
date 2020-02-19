@@ -1,0 +1,24 @@
+<div class="container  pt-5 pd-5" *ngIf="porudzbine">
+    <h2 class="mb-4">Lista porudžbina</h2>
+
+    <table class="table table-borderless">
+        <thead>
+            <th>ID</th>
+            <th>Datum</th>
+            <th>Kupac</th>
+            <th>Cena</th>
+            <th>Tip</th>
+            <th>Status</th>
+        </thead>
+        <tbody>
+            <tr *ngFor="let p of porudzbine">
+                <td>{{p.id}}</td>
+                <td>{{p.datum | date }}</td>
+                <td>{{p.kupac ? p.kupac.username : "gost"}}</td>
+                <td>{{p.cena}}</td>
+                <td>{{p.tipPorudzbine}}</td>
+                <td>{{p.statusPorudzbine}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

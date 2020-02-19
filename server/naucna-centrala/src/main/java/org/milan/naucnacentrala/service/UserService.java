@@ -186,6 +186,10 @@ public class UserService {
         return UserDTO.formDto(_userRepo.findByUsername(username).get());
     }
 
+    public User getUserFromRequest(HttpServletRequest request) {
+        return _userRepo.findByUsername(getUsernameFromRequest(request)).get();
+    }
+
     public String getUsernameFromRequest(HttpServletRequest request) {
         return tokenUtils.getUsernameFromToken(tokenUtils.getToken(request));
     }

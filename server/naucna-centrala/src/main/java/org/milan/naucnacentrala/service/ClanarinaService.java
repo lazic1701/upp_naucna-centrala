@@ -44,4 +44,12 @@ public class ClanarinaService {
 
     }
 
+    public Clanarina formClanarinaForCasopis(Casopis casopis, User u, Enums.PaymentType paymentType) {
+        Clanarina clanarina = new Clanarina();
+        clanarina.setPaymentType(paymentType);
+        clanarina.setCasopis(casopis);
+        clanarina.setUser(u);
+        return _clanarinaRepo.save(clanarina);
+    }
+
 }

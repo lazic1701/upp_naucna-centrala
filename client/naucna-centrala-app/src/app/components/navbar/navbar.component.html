@@ -11,6 +11,12 @@
         <li class="nav-item active">
           <a class="nav-link" routerLink="/casopisi"  routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" >Časopisi</a>
         </li>
+        <li class="nav-item active">
+          <a class="nav-link" [routerLink]="'/casopisi-urednik/' + userId"  routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" >Časopisi urednik</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" [routerLink]="'/porudzbine'"  routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" >Porudzbine</a>
+        </li>
       </ul>
       <ul class="navbar-nav ml-auto">
         

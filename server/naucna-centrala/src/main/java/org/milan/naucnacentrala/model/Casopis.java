@@ -1,6 +1,7 @@
 package org.milan.naucnacentrala.model;
 
 import org.milan.naucnacentrala.model.enums.Enums;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -22,6 +23,13 @@ public class Casopis implements Serializable {
 
     @Column(nullable = false)
     private String issn;
+
+    @Column
+    @Nullable
+    private Integer sellerId;
+
+    @Column
+    private boolean isRegistered = false;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
@@ -149,5 +157,21 @@ public class Casopis implements Serializable {
 
     public void setNaucniRadovi(Set<NaucniRad> naucniRadovi) {
         this.naucniRadovi = naucniRadovi;
+    }
+
+    public Integer getSellerId() {
+        return sellerId;
+    }
+
+    public void setSellerId(Integer sellerId) {
+        this.sellerId = sellerId;
+    }
+
+    public boolean isRegistered() {
+        return isRegistered;
+    }
+
+    public void setRegistered(boolean registered) {
+        isRegistered = registered;
     }
 }

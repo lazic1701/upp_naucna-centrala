@@ -8,20 +8,10 @@ import { CasopisService } from 'src/app/services/casopis.service';
 })
 export class CasopisiComponent implements OnInit {
 
-	constructor(private casService: CasopisService) {}
+	constructor() {}
 	
-	casopisi: any[] = null;
-
     ngOnInit() {
-		this.fetchCasopisi();
-	}
-	
-	fetchCasopisi() {
-		this.casService.getAllCasopisi().subscribe(
-			(res: any[]) => {
-				this.casopisi = res;
-			}
-		)
+
 	}
 	
 }
