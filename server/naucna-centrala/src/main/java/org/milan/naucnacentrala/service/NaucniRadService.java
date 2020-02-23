@@ -12,6 +12,7 @@ import org.milan.naucnacentrala.repository.ICasopisRepository;
 import org.milan.naucnacentrala.repository.INaucnaOblastRepository;
 import org.milan.naucnacentrala.repository.INaucniRadRepository;
 import org.milan.naucnacentrala.repository.IUserRepository;
+import org.milan.naucnacentrala.service_es.NaucniRadServiceES;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
@@ -57,6 +58,9 @@ public class NaucniRadService {
 
     @Autowired
     ServletContext context;
+
+    @Autowired
+    NaucniRadServiceES naucniRadServiceES;
 
 
     private final String OBJNR_PROCESS_INSTANCE_ID = "Process_Obrade_PT";
@@ -146,7 +150,8 @@ public class NaucniRadService {
         try (OutputStream os = Files.newOutputStream(filepath)) {
             os.write(file.getBytes());
             nr.setFilePath(filepath.toString());
-            _nrRepo.save(nr);
+            nr = _nrRepo.save(nr);
+            naucniRadServiceES.save(nr, getPDF(nr.getId()));
         } catch (IOException ex) {
             ex.printStackTrace();
 
@@ -156,10 +161,15 @@ public class NaucniRadService {
 
     public File getPDF(String pid) throws FileNotFoundException {
         int id = (int) runtimeService.getVariable(pid, "nrId");
-        NaucniRad nr = _nrRepo.findById(id).get();
 
-        return ResourceUtils.getFile(
-                nr.getFilePath());
+        return getPDF(id);
+    }
+
+    public File getPDF(int naucniRadId) throws FileNotFoundException {
+
+        NaucniRad nr = _nrRepo.findById(naucniRadId).get();
+
+        return ResourceUtils.getFile(nr.getFilePath());
     }
 
     public void sacuvajRecenzije(List<FormSubmissionDTO> form, int nrId, String recUsername) {

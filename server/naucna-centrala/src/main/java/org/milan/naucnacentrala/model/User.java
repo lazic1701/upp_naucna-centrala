@@ -46,7 +46,7 @@ public class User implements UserDetails, Serializable {
     @ManyToMany(cascade = {
             CascadeType.PERSIST,
             CascadeType.MERGE
-    })
+    }, fetch = FetchType.EAGER)
     @JoinTable(name = "_user_naucnaoblast",
             joinColumns = @JoinColumn(name = "naucnaoblast_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id")

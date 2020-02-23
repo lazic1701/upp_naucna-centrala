@@ -89,7 +89,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `_naucna_oblast` WRITE;
 /*!40000 ALTER TABLE `_naucna_oblast` DISABLE KEYS */;
-INSERT INTO `_naucna_oblast` (`id`, `naziv`) VALUES ('no1','Prirodno-matemati?ke nauke'),('no2','Tehni?ko-tehnološke nauke'),('no3','Društveno-humanisti?ke nauke'),('no4','Medicinske nauke'),('no5','Umetnosti');
+INSERT INTO `_naucna_oblast` (`id`, `naziv`) VALUES ('no1','Prirodno-matematičke nauke'),('no2','Tehničko-tehnološke nauke'),('no3','Društveno-humanističke nauke'),('no4','Medicinske nauke'),('no5','Umetnosti');
 /*!40000 ALTER TABLE `_naucna_oblast` ENABLE KEYS */;
 UNLOCK TABLES;
 

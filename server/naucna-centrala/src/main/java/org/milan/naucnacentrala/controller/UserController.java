@@ -14,6 +14,7 @@ import org.milan.naucnacentrala.model.dto.UserDTO;
 import org.milan.naucnacentrala.security.auth.JwtAuthenticationRequest;
 import org.milan.naucnacentrala.security.auth.UserTokenState;
 import org.milan.naucnacentrala.service.UserService;
+import org.milan.naucnacentrala.service_es.UserServiceES;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,6 +41,10 @@ public class UserController {
 
     @Autowired
     private UserService _userService;
+
+
+    @Autowired
+    private UserServiceES _userServiceES;
 
     @GetMapping(path = "/registration")
     public @ResponseBody
@@ -86,6 +91,13 @@ public class UserController {
     @RequestMapping(value = "/me", method = RequestMethod.GET)
     public ResponseEntity<UserDTO> getLoggedUser(HttpServletRequest request) {
         return new ResponseEntity<>(_userService.getLoggedUser(request), HttpStatus.OK);
+    }
+
+
+    @GetMapping(path = "/es/{id}")
+    public @ResponseBody
+    ResponseEntity getUserES(@PathVariable int id) {
+        return new ResponseEntity(_userServiceES.getUser(id), HttpStatus.OK);
     }
 
 

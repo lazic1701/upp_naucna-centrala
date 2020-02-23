@@ -3,16 +3,28 @@ package org.milan.naucnacentrala.handler;
 import org.camunda.bpm.engine.IdentityService;
 import org.camunda.bpm.engine.identity.Group;
 import org.camunda.bpm.engine.identity.User;
+import org.milan.naucnacentrala.repository.IUserRepository;
+import org.milan.naucnacentrala.repository_es.UserRepositoryES;
+import org.milan.naucnacentrala.service.UserService;
+import org.milan.naucnacentrala.service_es.UserServiceES;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.util.List;
 
 @Component
 public class InitHandler  {
 
     @Autowired
     IdentityService identityService;
+
+    @Autowired
+    IUserRepository userRepository;
+
+
+    @Autowired
+    UserServiceES userServiceES;
 
     @PostConstruct
     public void init() {
@@ -136,6 +148,18 @@ public class InitHandler  {
             identityService.saveUser(otore);
             identityService.createMembership(otore.getId(), "autori");
         }
+
+        List<org.milan.naucnacentrala.model.User> allUsers = userRepository.findAll();
+
+        for (org.milan.naucnacentrala.model.User u: allUsers) {
+            try {
+                userServiceES.saveUser(u);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+
 
     }
 }

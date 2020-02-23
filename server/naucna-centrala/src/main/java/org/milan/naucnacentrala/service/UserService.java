@@ -19,6 +19,7 @@ import org.milan.naucnacentrala.repository.*;
 import org.milan.naucnacentrala.security.TokenUtils;
 import org.milan.naucnacentrala.security.auth.JwtAuthenticationRequest;
 import org.milan.naucnacentrala.security.auth.UserTokenState;
+import org.milan.naucnacentrala.service_es.UserServiceES;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mobile.device.Device;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -72,6 +73,9 @@ public class UserService {
     @Autowired
     private AuthenticationManager manager;
 
+    @Autowired
+    UserServiceES userServiceES;
+
     private final String REG_PROCESS_INSTANCE_ID = "Process_registracija_korisnika";
 
     public FormFieldsDTO getRegistrationForm() {
@@ -115,8 +119,11 @@ public class UserService {
     }
 
 
-    public int createUser(User u) {
-        return _userRepo.save(u).getId();
+    public int createUser(User u) throws Exception {
+        u = _userRepo.save(u);
+        userServiceES.saveUser(u);
+
+        return u.getId();
     }
 
     public void createCamundaUserAndSetActive(String username) {

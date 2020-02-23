@@ -2,6 +2,7 @@ package org.milan.naucnacentrala.controller;
 
 import com.sun.xml.internal.ws.api.pipe.ContentType;
 import org.milan.naucnacentrala.service.NaucniRadService;
+import org.milan.naucnacentrala.service_es.NaucniRadServiceES;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
@@ -23,6 +24,16 @@ public class NaucniRadController {
 
     @Autowired
     NaucniRadService _nrService;
+
+    @Autowired
+    NaucniRadServiceES _nrServiceES;
+
+    @GetMapping(path = "/es/{id}")
+    public @ResponseBody
+    ResponseEntity getNaucniRadES(@PathVariable int id) {
+        return new ResponseEntity(_nrServiceES.getNaucniRadES(id), HttpStatus.OK);
+    }
+
 
     @GetMapping(path = "/init")
     @PreAuthorize("hasRole('ROLE_AUTOR') or hasRole('ROLE_RECENZENT')")
