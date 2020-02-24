@@ -42,7 +42,7 @@ public class CuvanjeRecenzenataZaRecenziju implements JavaDelegate {
             recenzentiZaRecenziju.add(fs.getFieldValue());
             System.out.println("Dodat: " + fs.getFieldValue());
             User r = _userRepo.findByUsername(fs.getFieldValue()).get();
-            sendEmail(r, "Dodeljena Vam je recenzija rada!");
+//            sendEmail(r, "Dodeljena Vam je recenzija rada!");
 
         }
 

@@ -48,44 +48,48 @@ public class NaucnaCentralaApplication {
 		return bean;
 	}
 
-	@Bean
-	public RestTemplate restTemplate()
-			throws KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
-		TrustStrategy acceptingTrustStrategy = (X509Certificate[] chain, String authType) -> true;
-
-		SSLContext sslContext = org.apache.http.ssl.SSLContexts.custom()
-				.loadTrustMaterial(null, acceptingTrustStrategy)
-				.build();
-
-		SSLConnectionSocketFactory csf = new SSLConnectionSocketFactory(sslContext, new NoopHostnameVerifier());
-		CloseableHttpClient httpClient = HttpClients.custom()
-				.setSSLSocketFactory(csf)
-				.build();
-
-		HttpComponentsClientHttpRequestFactory requestFactory =
-				new HttpComponentsClientHttpRequestFactory();
-
-		requestFactory.setHttpClient(httpClient);
-		RestTemplate restTemplate = new RestTemplate(requestFactory);
-		return restTemplate;
+	@Bean RestTemplate restTemplate() {
+		return new RestTemplate();
 	}
 
-	@Configuration
-	public class SSLConfig {
-		@Autowired
-		private Environment env;
+//	@Bean
+//	public RestTemplate restTemplate()
+//			throws KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
+//		TrustStrategy acceptingTrustStrategy = (X509Certificate[] chain, String authType) -> true;
+//
+//		SSLContext sslContext = org.apache.http.ssl.SSLContexts.custom()
+//				.loadTrustMaterial(null, acceptingTrustStrategy)
+//				.build();
+//
+//		SSLConnectionSocketFactory csf = new SSLConnectionSocketFactory(sslContext, new NoopHostnameVerifier());
+//		CloseableHttpClient httpClient = HttpClients.custom()
+//				.setSSLSocketFactory(csf)
+//				.build();
+//
+//		HttpComponentsClientHttpRequestFactory requestFactory =
+//				new HttpComponentsClientHttpRequestFactory();
+//
+//		requestFactory.setHttpClient(httpClient);
+//		RestTemplate restTemplate = new RestTemplate(requestFactory);
+//		return restTemplate;
+//	}
 
-
-		@PostConstruct
-		private void configureSSL() {
-
-			//set to TLSv1.1 or TLSv1.2
-			System.setProperty("https.protocols", "TLSv1.2");
-
-			//load the 'javax.net.ssl.trustStore' and
-			//'javax.net.ssl.trustStorePassword' from application.properties
-			System.setProperty("javax.net.ssl.trustStore", env.getProperty("server.ssl.trust-store"));
-			System.setProperty("javax.net.ssl.trustStorePassword",env.getProperty("server.ssl.trust-store-password"));
-		}
-	}
+//	@Configuration
+//	public class SSLConfig {
+//		@Autowired
+//		private Environment env;
+//
+//
+//		@PostConstruct
+//		private void configureSSL() {
+//
+//			//set to TLSv1.1 or TLSv1.2
+//			System.setProperty("https.protocols", "TLSv1.2");
+//
+//			//load the 'javax.net.ssl.trustStore' and
+//			//'javax.net.ssl.trustStorePassword' from application.properties
+//			System.setProperty("javax.net.ssl.trustStore", env.getProperty("server.ssl.trust-store"));
+//			System.setProperty("javax.net.ssl.trustStorePassword",env.getProperty("server.ssl.trust-store-password"));
+//		}
+//	}
 }

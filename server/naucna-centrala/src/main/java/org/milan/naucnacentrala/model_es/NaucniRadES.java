@@ -5,6 +5,7 @@ import org.milan.naucnacentrala.model.User;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
+import org.springframework.data.elasticsearch.annotations.Score;
 
 import javax.persistence.Id;
 import java.util.List;
@@ -31,8 +32,10 @@ public class NaucniRadES {
     @Field(type = FieldType.Text, store = true)
     private String kljucniPojmovi;
 
-    @Field(type = FieldType.Text, store = true)
+    @Field(type = FieldType.Text, searchAnalyzer = "serbian", analyzer = "serbian")
     private String tekst;
+
+
 
     public NaucniRadES() {
     }
@@ -92,4 +95,5 @@ public class NaucniRadES {
     public void setTekst(String tekst) {
         this.tekst = tekst;
     }
+
 }

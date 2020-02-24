@@ -63,7 +63,7 @@ public class NaucniRadService {
     NaucniRadServiceES naucniRadServiceES;
 
 
-    private final String OBJNR_PROCESS_INSTANCE_ID = "Process_Obrade_PT";
+    private final String OBJNR_PROCESS_INSTANCE_ID = "Process_Obrade_PTShort";
 
     public void initObjavaNR(HttpServletRequest request) {
         ProcessInstance pi = runtimeService.startProcessInstanceByKey(this.OBJNR_PROCESS_INSTANCE_ID);
@@ -151,7 +151,6 @@ public class NaucniRadService {
             os.write(file.getBytes());
             nr.setFilePath(filepath.toString());
             nr = _nrRepo.save(nr);
-            naucniRadServiceES.save(nr, getPDF(nr.getId()));
         } catch (IOException ex) {
             ex.printStackTrace();
 

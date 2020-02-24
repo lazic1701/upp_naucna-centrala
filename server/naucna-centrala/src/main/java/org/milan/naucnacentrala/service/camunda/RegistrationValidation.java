@@ -76,7 +76,7 @@ public class RegistrationValidation implements JavaDelegate {
             }
         }
 
-        u.getAuthorities().add(authorityRepository.findOneByName(Enums.UserRole.ROLE_AUTOR.toString()));
+        u.getAuthorities().add(authorityRepository.findOneByName(Enums.UserRole.ROLE_RECENZENT.toString()));
         u.setActive(false);
 
         _userService.createUser(u);

@@ -1,11 +1,17 @@
 package org.milan.naucnacentrala.service.camunda.nr;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.milan.naucnacentrala.model.NaucniRad;
 import org.milan.naucnacentrala.model.dto.FormSubmissionDTO;
 import org.milan.naucnacentrala.model.enums.Enums;
+import org.milan.naucnacentrala.model_es.NaucniRadES;
 import org.milan.naucnacentrala.repository.INaucniRadRepository;
+import org.milan.naucnacentrala.service.NaucniRadService;
+import org.milan.naucnacentrala.service_es.NaucniRadServiceES;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +23,13 @@ public class Kraj implements JavaDelegate {
     @Autowired
     INaucniRadRepository _nrRepo;
 
+
+    @Autowired
+    NaucniRadService naucniRadService;
+
+    @Autowired
+    NaucniRadServiceES naucniRadServiceES;
+
     @Override
     public void execute(DelegateExecution delegateExecution) throws Exception {
 
@@ -27,18 +40,15 @@ public class Kraj implements JavaDelegate {
         List<FormSubmissionDTO> form =
                 (List<FormSubmissionDTO>)delegateExecution.getVariable("submittedForm");
 
-        for (FormSubmissionDTO fs : form) {
-            if (fs.getFieldId().equals("konacnaOdluka")) {
-                if (fs.getFieldValue().equals("prihvatiti")) {
-                    nr.setStatus(Enums.NaucniRadStatus.ODOBREN);
-                } else if (fs.getFieldValue().equals("odbiti")) {
-                    nr.setStatus(Enums.NaucniRadStatus.ODBIJEN);
-                }
-            }
-
-        }
-
-        _nrRepo.save(nr);
+        nr.setStatus(Enums.NaucniRadStatus.ODOBREN);
+        nr = _nrRepo.save(nr);
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        NaucniRadES nrES = naucniRadServiceES.save(nr, naucniRadService.getPDF(nr.getId()));
+//
+//        System.out.println("----------------------------------------------------------------------");
+//        System.out.println("Indeksiran: ");
+//        System.out.println(gson.toJson(nrES));
+//        System.out.println("----------------------------------------------------------------------");
 
     }
 }
