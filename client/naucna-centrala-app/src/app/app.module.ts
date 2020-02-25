@@ -19,7 +19,10 @@ import { CasopisiComponent } from './components/casopisi/casopisi.component';
 import { CasopisiUrednikComponent } from './components/casopisi-urednik/casopisi-urednik.component';
 import { CasopisiListComponent } from './components/casopisi/casopisi-list/casopisi-list.component';
 import { CasopisComponent } from './components/casopisi/casopis/casopis.component';
-import { PorudzbineComponent } from './components/porudzbine/porudzbine.component'
+import { PorudzbineComponent } from './components/porudzbine/porudzbine.component';
+import { PretragaComponent } from './components/pretraga/pretraga.component';
+import { SimplePretragaComponent } from './components/pretraga/simple-pretraga/simple-pretraga.component';
+import { AdvancedPretragaComponent } from './components/pretraga/advanced-pretraga/advanced-pretraga.component'
 
 @NgModule({
   declarations: [
@@ -36,7 +39,10 @@ import { PorudzbineComponent } from './components/porudzbine/porudzbine.componen
     CasopisiUrednikComponent,
     CasopisiListComponent,
     CasopisComponent,
-    PorudzbineComponent
+    PorudzbineComponent,
+    PretragaComponent,
+    SimplePretragaComponent,
+    AdvancedPretragaComponent
   ],
   imports: [
     BrowserModule,

@@ -2,8 +2,10 @@ package org.milan.naucnacentrala.service.camunda.nr;
 
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
+import org.milan.naucnacentrala.model.NaucniRad;
 import org.milan.naucnacentrala.model.User;
 import org.milan.naucnacentrala.model.dto.FormSubmissionDTO;
+import org.milan.naucnacentrala.repository.INaucniRadRepository;
 import org.milan.naucnacentrala.repository.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -20,6 +22,9 @@ public class CuvanjeRecenzenataZaRecenziju implements JavaDelegate {
     @Autowired
     IUserRepository _userRepo;
 
+    @Autowired
+    INaucniRadRepository _nrRepo;
+
 
     @Autowired
     private Environment environment;
@@ -34,6 +39,10 @@ public class CuvanjeRecenzenataZaRecenziju implements JavaDelegate {
 
         List<String> recenzentiZaRecenziju = new ArrayList<>();
 
+        int nrId = (int) delegateExecution.getVariable("nrId");
+
+        NaucniRad nr = _nrRepo.findById(nrId).get();
+
 
         List<FormSubmissionDTO> form =
                 (List<FormSubmissionDTO>)delegateExecution.getVariable("submittedForm");
@@ -42,6 +51,11 @@ public class CuvanjeRecenzenataZaRecenziju implements JavaDelegate {
             recenzentiZaRecenziju.add(fs.getFieldValue());
             System.out.println("Dodat: " + fs.getFieldValue());
             User r = _userRepo.findByUsername(fs.getFieldValue()).get();
+
+            nr.getRecenzenti().add(r);
+            _nrRepo.save(nr);
+
+
 //            sendEmail(r, "Dodeljena Vam je recenzija rada!");
 
         }

@@ -6,6 +6,9 @@ import org.milan.naucnacentrala.model.NaucniRad;
 import org.milan.naucnacentrala.model.enums.Enums;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class NaucniRadDTO {
 
@@ -18,6 +21,7 @@ public class NaucniRadDTO {
     private NaucnaOblastDTO naucnaOblast;
     private CasopisDTO casopis;
     private UserDTO autor;
+    private List<String> koautori = new ArrayList<>();
     private double cena;
 
 
@@ -42,10 +46,14 @@ public class NaucniRadDTO {
         if (nr == null) {
             return new NaucniRadDTO();
         } else {
-            return new NaucniRadDTO(nr.getId(), nr.getNaslov(), nr.getApstrakt(), nr.getKljucniPojmovi(),
-                    nr.getFilePath(), nr.getStatus(),
+            NaucniRadDTO retVal = new NaucniRadDTO(nr.getId(), nr.getNaslov(), nr.getApstrakt(),
+                    nr.getKljucniPojmovi(),
+                    "", nr.getStatus(),
                     NaucnaOblastDTO.formDto(nr.getNaucnaOblast()), CasopisDTO.formDto(nr.getCasopis()),
                     UserDTO.formDto(nr.getAutor()), nr.getCena());
+
+            retVal.setKoautori(nr.getKoautori().stream().map(koa -> koa.getIme()).collect(Collectors.toList()));
+            return retVal;
         }
     }
 
@@ -120,5 +128,21 @@ public class NaucniRadDTO {
 
     public void setAutor(UserDTO autor) {
         this.autor = autor;
+    }
+
+    public List<String> getKoautori() {
+        return koautori;
+    }
+
+    public void setKoautori(List<String> koautori) {
+        this.koautori = koautori;
+    }
+
+    public double getCena() {
+        return cena;
+    }
+
+    public void setCena(double cena) {
+        this.cena = cena;
     }
 }

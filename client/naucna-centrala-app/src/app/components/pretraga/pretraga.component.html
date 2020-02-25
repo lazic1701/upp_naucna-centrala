@@ -1,0 +1,28 @@
+<div class="container pt-5 pb-5">
+    <h2 class="mb-4">Pretraga načnih radova</h2>
+
+    <button class="btn btn-primary mr-3" (click)="onSimpleSearch()">Jednostavna pretraga</button>
+    <button class="btn btn-dark" (click)="onAdvancedSearch()">Napredna pretraga</button>
+
+    <div class="search-forms">
+        <app-simple-pretraga (output)="onResultsArrived($event)" *ngIf="searchType === 'simple'"></app-simple-pretraga>
+        <app-advanced-pretraga (output)="onResultsArrived($event)" *ngIf="searchType === 'advanced'"></app-advanced-pretraga>
+    </div>
+
+    <div class="rezultati-pretrage" *ngIf="result">
+        <hr>
+        <h5 class="mt-2 mb-4">Prikazivanje rezultata: {{result.hits}}</h5>
+
+        <div *ngFor="let r of result.results" class="mb-5">
+            <h4 class="strong text-underline">{{r.naucniRad.naslov}}</h4>
+            <div>Autor: <strong>{{r.naucniRad.autor.firstname}} {{r.naucniRad.autor.lastname}}</strong></div>
+            <div>Koautori: <strong *ngFor="let koa of r.naucniRad.koautori">{{koa}}</strong></div>
+            <p [innerHTML]="r.highlighter">
+            </p>
+
+            
+
+        </div>
+    </div>
+
+</div>

@@ -7,6 +7,7 @@ import org.elasticsearch.common.transport.TransportAddress;
 import org.elasticsearch.transport.client.PreBuiltTransportClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
@@ -34,6 +35,11 @@ public class ElasticSearchConfig {
         }
 
         return transportClient;
+    }
+
+    @Bean(name = {"elasticsearchOperations", "elasticsearchTemplate"})
+    public ElasticsearchTemplate elasticsearchTemplate() throws UnknownHostException {
+        return new ElasticsearchTemplate(client());
     }
 
 }

@@ -16,3 +16,8 @@
 .btn {
     letter-spacing: 0.5px;
 }
+
+em {
+    color: rgb(0, 51, 146);
+    font-weight: 600;
+}

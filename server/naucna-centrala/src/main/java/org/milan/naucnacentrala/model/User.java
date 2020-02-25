@@ -77,6 +77,8 @@ public class User implements UserDetails, Serializable {
     @OneToMany(mappedBy = "recenzent", fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     private Set<Recenzija> recenzije = new HashSet<>();
 
+    @ManyToMany(mappedBy = "recenzenti")
+    private Set<NaucniRad> recenziraniNaucniRadovi = new HashSet<>();
 
     public User() {
     }
@@ -265,5 +267,14 @@ public class User implements UserDetails, Serializable {
 
     public void setRecenzije(Set<Recenzija> recenzije) {
         this.recenzije = recenzije;
+    }
+
+
+    public Set<NaucniRad> getRecenziraniNaucniRadovi() {
+        return recenziraniNaucniRadovi;
+    }
+
+    public void setRecenziraniNaucniRadovi(Set<NaucniRad> recenziraniNaucniRadovi) {
+        this.recenziraniNaucniRadovi = recenziraniNaucniRadovi;
     }
 }

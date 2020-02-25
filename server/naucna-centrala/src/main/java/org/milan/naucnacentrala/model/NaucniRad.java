@@ -4,7 +4,9 @@ import org.milan.naucnacentrala.model.enums.Enums;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -46,6 +48,12 @@ public class NaucniRad implements Serializable {
 
     @OneToMany(mappedBy = "naucniRad", cascade = CascadeType.ALL)
     private Set<Koautor> koautori = new HashSet<>();
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinTable(name = "_naucni_rad_recenzent",
+            inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            joinColumns = @JoinColumn(name = "naucni_rad_id", referencedColumnName = "id"))
+    private List<User> recenzenti = new ArrayList<>();
 
     @OneToMany(mappedBy = "naucniRad", cascade = CascadeType.ALL)
     private Set<Recenzija> recenzije = new HashSet<>();
@@ -148,5 +156,13 @@ public class NaucniRad implements Serializable {
 
     public void setCena(double cena) {
         this.cena = cena;
+    }
+
+    public List<User> getRecenzenti() {
+        return recenzenti;
+    }
+
+    public void setRecenzenti(List<User> recenzenti) {
+        this.recenzenti = recenzenti;
     }
 }

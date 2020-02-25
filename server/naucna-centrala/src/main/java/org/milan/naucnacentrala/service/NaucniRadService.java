@@ -135,6 +135,8 @@ public class NaucniRadService {
     }
 
 
+
+
     public void savePDF(MultipartFile file, String pid) throws IOException {
         int id = (int) runtimeService.getVariable(pid, "nrId");
         NaucniRad nr = _nrRepo.findById(id).get();
@@ -201,5 +203,7 @@ public class NaucniRadService {
         nr.getRecenzije().add(rec);
         _nrRepo.save(nr);
     }
+
+
 }
 

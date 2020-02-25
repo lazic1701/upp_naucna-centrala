@@ -23,9 +23,6 @@ public class UserES {
     private String ime;
 
     @Field(type = FieldType.Text, store = true)
-    private String prezime;
-
-    @Field(type = FieldType.Text, store = true)
     private String role;
 
     @GeoPointField
@@ -51,14 +48,6 @@ public class UserES {
 
     public void setIme(String ime) {
         this.ime = ime;
-    }
-
-    public String getPrezime() {
-        return prezime;
-    }
-
-    public void setPrezime(String prezime) {
-        this.prezime = prezime;
     }
 
     public String getRole() {

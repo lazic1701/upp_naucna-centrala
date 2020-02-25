@@ -1,0 +1,76 @@
+<div class="row">
+    <div class="col-4">
+
+        <form [formGroup]="pretragaForm" (ngSubmit)="onSubmit()">
+            <div class="form-group mt-4">
+                <label for="fieldValue">Način pretrage *</label>
+                <select formControlName="operator" class="form-control">
+                    <option value="">Izaberite polje po kom se pretržuje</option>
+                    <option  value="AND">Presek</option>
+                    <option value="OR">Unija</option>
+                </select>
+            </div>
+
+            <div class="form-group mt-2">
+                <label for="casopisNaziv">Naziv časopisa</label>
+                <input
+                    type="text"
+                    class="form-control"
+                    formControlName="casopisNaziv"
+                />
+            </div>
+            <div class="form-group mt-2">
+                <label for="casopisNaziv">Naslov naučnog rada</label>
+                <input
+                    type="text"
+                    class="form-control"
+                    formControlName="naslov"
+                />
+            </div>
+            <div class="form-group mt-2">
+                <label for="casopisNaziv">Imena autora</label>
+                <input
+                    type="text"
+                    class="form-control"
+                    formControlName="autor"
+                />
+            </div>
+            <div class="form-group mt-2">
+                <label for="casopisNaziv">Ključni pojmovi</label>
+                <input
+                    type="text"
+                    class="form-control"
+                    formControlName="kljucniPojmovi"
+                />
+            </div>
+
+            <div class="form-group mt-2">
+                <label for="casopisNaziv">Tekst naučnog rada</label>
+                <input
+                    type="text"
+                    class="form-control"
+                    formControlName="tekst"
+                />
+            </div>
+
+            <div class="form-group mt-2">
+                <label for="casopisNaziv">Naučne oblasti</label>
+                <input
+                    type="text"
+                    class="form-control"
+                    formControlName="naucneOblasti"
+                />
+            </div>
+           
+
+            <div class="form-group mt-4">
+                <button class="btn btn-success" type="submit">Pretražite</button>
+            </div>
+
+
+        </form>
+
+
+
+    </div>
+</div>

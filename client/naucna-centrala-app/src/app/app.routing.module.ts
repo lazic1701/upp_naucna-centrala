@@ -12,6 +12,9 @@ import { CasopisiUrednikComponent } from './components/casopisi-urednik/casopisi
 import { CasopisiListComponent } from './components/casopisi/casopisi-list/casopisi-list.component';
 import { CasopisComponent } from './components/casopisi/casopis/casopis.component';
 import { PorudzbineComponent } from './components/porudzbine/porudzbine.component';
+import { PretragaComponent } from './components/pretraga/pretraga.component';
+import { SimplePretragaComponent } from './components/pretraga/simple-pretraga/simple-pretraga.component';
+import { AdvancedPretragaComponent } from './components/pretraga/advanced-pretraga/advanced-pretraga.component';
 
 const appRoutes: Routes = [
     { path: '', redirectTo: '/home', pathMatch: 'full'},
@@ -30,7 +33,12 @@ const appRoutes: Routes = [
     
     { path: 'casopisi-urednik/:id', component: CasopisiUrednikComponent },
     
-    { path: 'porudzbine', component: PorudzbineComponent }
+    { path: 'porudzbine', component: PorudzbineComponent },
+    { path: 'pretraga', component: PretragaComponent, children: [
+      { path: 'jednostavna', component: SimplePretragaComponent },
+      { path: 'napredna', component: AdvancedPretragaComponent }
+    ] }
+    
     
     
 ]

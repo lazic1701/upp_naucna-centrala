@@ -63,5 +63,17 @@ public class NaucniRadController {
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + filePdf.getName() + "\"")
                 .body(new ByteArrayResource(Files.readAllBytes(filePdf.toPath())));
     }
+
+    @GetMapping(path = "/file/nr/{id}", produces = MediaType.APPLICATION_PDF_VALUE)
+    public @ResponseBody
+    ResponseEntity downloadPDFNR(@PathVariable int id) throws IOException {
+
+        File filePdf = _nrService.getPDF(id);
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType("application/pdf"))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + filePdf.getName() + "\"")
+                .body(new ByteArrayResource(Files.readAllBytes(filePdf.toPath())));
+    }
 }
 

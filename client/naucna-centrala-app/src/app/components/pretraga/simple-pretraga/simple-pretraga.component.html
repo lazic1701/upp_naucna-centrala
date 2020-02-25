@@ -1,0 +1,37 @@
+<div class="row">
+    <div class="col-4">
+
+        <form [formGroup]="pretragaForm" (ngSubmit)="onSubmit()">
+            <div class="form-group mt-2">
+                <label for="fieldValue">Tekst pretrage *</label>
+                <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Unesite tekst za pretragu..."
+                    formControlName="fieldValue"
+                />
+            </div>
+            <div class="form-group mt-4">
+                <label for="fieldValue">Izaberite polje po kom se pretržuje *</label>
+                <select formControlName="fieldName" class="form-control">
+                    <option value="">Izaberite polje po kom se pretržuje</option>
+                    <option  value="casopis.naziv">Naziv časopisa</option>
+                    <option value="naslov">Naslov naučnog rada</option>
+                    <option value="autori.ime">Imena autora</option>
+                    <option value="kljucniPojmovi">Ključni pojmovi</option>
+                    <option value="tekst">Tekst naučnog rada</option>
+                    <option value="autori.naucneOblasti">Naučne oblasti</option>
+                    </select>
+            </div>
+
+            <div class="form-group mt-4">
+                <button class="btn btn-success" type="submit">Pretražite</button>
+            </div>
+
+
+        </form>
+
+
+
+    </div>
+</div>

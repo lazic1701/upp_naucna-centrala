@@ -8,6 +8,7 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 import org.springframework.data.elasticsearch.annotations.Score;
 
 import javax.persistence.Id;
+import java.util.ArrayList;
 import java.util.List;
 
 @Document(indexName = "naucni_rad", type = "naucni_rad", shards = 1, replicas = 0)
@@ -17,19 +18,19 @@ public class NaucniRadES {
     @Field(type = FieldType.Integer, store = true)
     private int id;
 
-    @Field(type = FieldType.Text, store = true)
+    @Field(type = FieldType.Text, store = true, searchAnalyzer = "serbian", analyzer = "serbian")
     private String naslov;
 
     @Field(type = FieldType.Nested, store = true)
     private CasopisES casopis;
 
     @Field(type = FieldType.Nested, store = true)
-    private UserES autor;
+    private List<UserES> autori = new ArrayList<>();
 
     @Field(type = FieldType.Nested, store = true)
-    private List<UserES> koautori;
+    private List<UserES> recenzenti = new ArrayList<>();
 
-    @Field(type = FieldType.Text, store = true)
+    @Field(type = FieldType.Text, store = true, searchAnalyzer = "serbian", analyzer = "serbian")
     private String kljucniPojmovi;
 
     @Field(type = FieldType.Text, searchAnalyzer = "serbian", analyzer = "serbian")
@@ -64,20 +65,12 @@ public class NaucniRadES {
         this.casopis = casopis;
     }
 
-    public UserES getAutor() {
-        return autor;
+    public List<UserES> getAutori() {
+        return autori;
     }
 
-    public void setAutor(UserES autor) {
-        this.autor = autor;
-    }
-
-    public List<UserES> getKoautori() {
-        return koautori;
-    }
-
-    public void setKoautori(List<UserES> koautori) {
-        this.koautori = koautori;
+    public void setAutori(List<UserES> autori) {
+        this.autori = autori;
     }
 
     public String getKljucniPojmovi() {
@@ -96,4 +89,11 @@ public class NaucniRadES {
         this.tekst = tekst;
     }
 
+    public List<UserES> getRecenzenti() {
+        return recenzenti;
+    }
+
+    public void setRecenzenti(List<UserES> recenzenti) {
+        this.recenzenti = recenzenti;
+    }
 }
